@@ -41,13 +41,15 @@ public class MeetingJsonParser {
         File dir = new File("E:\\json");
         File[] files = dir.listFiles();
 
-        Arrays.sort(files, (file1, file2) -> {  // json 파일명 숫자 기준 오름차순 정렬
+        // json 파일명 숫자 기준 오름차순 정렬
+        Arrays.sort(files, (file1, file2) -> {
             String name1 = file1.getName().replaceAll("\\D", "");
             String name2 = file2.getName().replaceAll("\\D", "");
 
             return Integer.compare(Integer.parseInt(name1), Integer.parseInt(name2));
         });
 
+        // JSON 파일 파싱
         for(File file : files){
             parseJsonFile(file.getPath());
         }
