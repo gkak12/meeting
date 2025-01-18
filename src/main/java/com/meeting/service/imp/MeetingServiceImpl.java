@@ -14,10 +14,9 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class MeetingServiceImp implements MeetingService {
-
-    private final MeetingRepository meetingRepository;
+public class MeetingServiceImpl implements MeetingService {
     private final MeetingMapper meetingMapper;
+    private final MeetingRepository meetingRepository;
 
     @Override
     public List<MeetingVo> findAllMeetings() {

@@ -18,7 +18,6 @@ import java.util.List;
 @RequestMapping("/meeting")
 @RequiredArgsConstructor
 public class MeetingController {
-
     private final MeetingService meetingService;
 
     @ResponseStatus(HttpStatus.OK)
