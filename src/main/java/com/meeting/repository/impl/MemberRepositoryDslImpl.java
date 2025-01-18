@@ -1,4 +1,4 @@
-package com.meeting.repository.imp;
+package com.meeting.repository.impl;
 
 import com.meeting.domain.entity.Member;
 import com.meeting.repository.MemberRepositoryDsl;
@@ -12,7 +12,7 @@ import static com.meeting.domain.entity.QMember.member;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class MemberRepositoryDslImp implements MemberRepositoryDsl {
+public class MemberRepositoryDslImpl implements MemberRepositoryDsl {
 
     private final JPAQueryFactory jpaQueryFactory;
 

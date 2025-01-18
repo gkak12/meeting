@@ -1,4 +1,4 @@
-package com.meeting.component;
+package com.meeting.common;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -92,13 +92,8 @@ public class MeetingJsonParser {
             // Member 참석 여부 Map 생성
             Map<String, Boolean> memberMap = new HashMap<>();
 
-            attendants.forEach(item -> {
-                memberMap.put(item.asText(), true);
-            });
-
-            nonAttendants.forEach(item -> {
-                memberMap.put(item.asText(), false);
-            });
+            attendants.forEach(item -> memberMap.put(item.asText(), true));
+            nonAttendants.forEach(item -> memberMap.put(item.asText(), false));
 
             memberMap.keySet().stream()
                 .forEach(item -> {

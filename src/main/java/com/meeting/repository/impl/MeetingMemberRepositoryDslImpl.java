@@ -1,4 +1,4 @@
-package com.meeting.repository.imp;
+package com.meeting.repository.impl;
 
 import com.meeting.repository.MeetingMemberRepositoryDsl;
 import lombok.RequiredArgsConstructor;
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class MeetingMemberRepositoryDslImp implements MeetingMemberRepositoryDsl {
+public class MeetingMemberRepositoryDslImpl implements MeetingMemberRepositoryDsl {
 }
