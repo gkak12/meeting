@@ -1,7 +1,6 @@
 package com.meeting.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +25,6 @@ public class MeetingMember {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_SEQ")
-    @JsonManagedReference
+    @JsonBackReference
     private Member member;
 }

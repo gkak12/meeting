@@ -21,7 +21,7 @@ public class Content {
     @Column(name = "CONTENT_CREATOR", length = 100)
     private String contentCreator;
 
-    @Column(name = "CONTENT_RECOMMENDER", length = 100)
+    @Column(name = "CONTENT_RECOMMENDER", length = 20)
     private String contentRecommender;
 
     @OneToOne(fetch = FetchType.LAZY)

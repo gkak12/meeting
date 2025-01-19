@@ -1,6 +1,6 @@
 package com.meeting.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +20,7 @@ public class Member {
     @Column(name = "MEMBER_NAME", nullable = false, length = 20)
     private String memberName;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MeetingMember> meetingMembers;
 }
