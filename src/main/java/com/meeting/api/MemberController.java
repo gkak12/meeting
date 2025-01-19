@@ -25,9 +25,9 @@ public class MemberController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/name/{name}")
-    public ResponseEntity<MemberVo> findByMemberName(@PathVariable String name) throws Exception {
+    public ResponseEntity<MemberVo> findByMemberName(@PathVariable String name){
         if(StringUtils.isBlank(name)){
-            throw new Exception("name is empty.");
+            throw new IllegalArgumentException("name is empty.");
         }
 
         return ResponseEntity.ok(memberService.findByMemberName(name));

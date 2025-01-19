@@ -25,9 +25,9 @@ public class ContentController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/name/{name}")
-    public ResponseEntity<List<ContentVo>> findContentByContentName(@PathVariable String name) throws Exception{
+    public ResponseEntity<List<ContentVo>> findContentByContentName(@PathVariable String name){
         if(StringUtils.isBlank(name)){
-            throw new Exception("name is empty.");
+            throw new IllegalArgumentException("name is empty.");
         }
 
         return ResponseEntity.ok(contentService.findContentByContentName(name));
