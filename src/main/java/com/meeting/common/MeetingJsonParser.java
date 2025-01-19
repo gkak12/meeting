@@ -104,6 +104,7 @@ public class MeetingJsonParser {
                     if(member == null){
                         Member newMember = new Member();
                         newMember.setMemberName(item);
+                        newMember.setIsDeleted(false);
                         memberRepository.save(newMember);
 
                         member = newMember;
