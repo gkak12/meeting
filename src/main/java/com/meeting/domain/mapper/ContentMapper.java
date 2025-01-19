@@ -13,6 +13,7 @@ import org.mapstruct.*;
         componentModel = "spring"
 )
 public interface ContentMapper {
+
     ContentVo toVo(Content content);
     Content toEntity(ContentDto contentDto);
 }

@@ -13,6 +13,7 @@ import org.mapstruct.*;
         componentModel = "spring"
 )
 public interface MemberMapper {
+
     MemberVo toVo(Member member);
     Member toEntity(MemberDto memberDto);
 }

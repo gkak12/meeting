@@ -12,6 +12,7 @@ import java.util.List;
 @Table(name = "MEMBER")
 @NoArgsConstructor
 public class Member {
+
     @Id
     @Column(name = "MEMBER_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

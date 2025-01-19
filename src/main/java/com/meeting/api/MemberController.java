@@ -14,6 +14,7 @@ import java.util.List;
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
+
     private final MemberService memberService;
 
     @ResponseStatus(HttpStatus.OK)

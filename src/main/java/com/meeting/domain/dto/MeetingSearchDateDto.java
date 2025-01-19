@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MeetingSearchDateDto {
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 

@@ -17,10 +17,10 @@ public class MemberRepositoryDslImpl implements MemberRepositoryDsl {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Member findByMemberName(String name) {
+    public Member findByMemberName(String memberName) {
         return jpaQueryFactory
                 .selectFrom(member)
-                .where(member.memberName.eq(name))
+                .where(member.memberName.eq(memberName))
                 .fetchOne();
     }
 }

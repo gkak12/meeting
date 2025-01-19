@@ -13,6 +13,7 @@ import java.util.List;
 @Table(name = "MEETING")
 @NoArgsConstructor
 public class Meeting {
+
     @Id
     @Column(name = "MEETING_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

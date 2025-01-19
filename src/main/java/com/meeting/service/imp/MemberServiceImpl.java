@@ -14,6 +14,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
+
     private final MemberMapper memberMapper;
     private final MemberRepository memberRepository;
 

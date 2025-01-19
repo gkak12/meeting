@@ -13,6 +13,7 @@ import org.mapstruct.*;
         componentModel = "spring"
 )
 public interface MeetingMapper {
+
     MeetingVo toVo(Meeting meeting);
     Meeting toEntity(MeetingDto meetingDto);
 }

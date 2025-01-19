@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContentDto {
+
     private String contentName;
     private String contentCreator;
     private String contentRecommender;

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "MEETING_MEMBER")
 @NoArgsConstructor
 public class MeetingMember {
+
     @Id
     @Column(name = "MEETING_MEMBER_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -15,6 +15,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MeetingServiceImpl implements MeetingService {
+
     private final MeetingMapper meetingMapper;
     private final MeetingRepository meetingRepository;
 
