@@ -11,4 +11,5 @@ public interface MemberService {
     MemberVo findByMemberName(String name);
     void createMember(MemberCreateDto memberCreateDto);
     void updateMember(MemberUpdateDto memberUpdateDto);
+    void deleteMember(Long memberSeq);
 }

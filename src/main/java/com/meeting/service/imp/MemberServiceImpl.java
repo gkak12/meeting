@@ -36,6 +36,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void createMember(MemberCreateDto memberCreateDto) {
         memberRepository.save(
                 memberMapper.toCreateEntity(memberCreateDto)
@@ -43,10 +44,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void updateMember(MemberUpdateDto memberUpdateDto) {
         Long memberSeq = memberUpdateDto.getMemberSeq();
         Member member = memberRepository.findById(memberSeq).orElseThrow(() -> new NullPointerException("member is not found."));
         memberMapper.toUpdateEntity(memberUpdateDto, member);
+
+        memberRepository.save(member);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMember(Long memberSeq) {
+        Member member = memberRepository.findById(memberSeq).orElseThrow(() -> new NullPointerException("member is not found."));
+        member.setIsDeleted(true);
 
         memberRepository.save(member);
     }
