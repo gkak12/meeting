@@ -1,5 +1,6 @@
 package com.meeting.service;
 
+import com.meeting.domain.dto.MemberCreateDto;
 import com.meeting.domain.vo.MemberVo;
 
 import java.util.List;
@@ -7,4 +8,5 @@ import java.util.List;
 public interface MemberService {
     List<MemberVo> findAllMembers();
     MemberVo findByMemberName(String name);
+    void createMember(MemberCreateDto memberCreateDto);
 }

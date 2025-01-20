@@ -1,7 +1,9 @@
 package com.meeting.api;
 
+import com.meeting.domain.dto.MemberCreateDto;
 import com.meeting.domain.vo.MemberVo;
 import com.meeting.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -31,5 +33,12 @@ public class MemberController {
         }
 
         return ResponseEntity.ok(memberService.findByMemberName(name));
+    }
+    
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping
+    public ResponseEntity<Void> createMember(@RequestBody @Valid MemberCreateDto memberCreateDto){
+        memberService.createMember(memberCreateDto);
+        return ResponseEntity.ok().build();
     }
 }

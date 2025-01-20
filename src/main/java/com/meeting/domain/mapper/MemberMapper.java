@@ -1,6 +1,6 @@
 package com.meeting.domain.mapper;
 
-import com.meeting.domain.dto.MemberDto;
+import com.meeting.domain.dto.MemberCreateDto;
 import com.meeting.domain.entity.Member;
 import com.meeting.domain.vo.MemberVo;
 import org.mapstruct.*;
@@ -15,5 +15,5 @@ import org.mapstruct.*;
 public interface MemberMapper {
 
     MemberVo toVo(Member member);
-    Member toEntity(MemberDto memberDto);
+    Member toCreateEntity(MemberCreateDto memberCreateDto);
 }

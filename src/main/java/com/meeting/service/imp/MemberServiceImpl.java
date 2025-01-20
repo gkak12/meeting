@@ -1,5 +1,6 @@
 package com.meeting.service.imp;
 
+import com.meeting.domain.dto.MemberCreateDto;
 import com.meeting.domain.mapper.MemberMapper;
 import com.meeting.domain.vo.MemberVo;
 import com.meeting.repository.MemberRepository;
@@ -29,6 +30,13 @@ public class MemberServiceImpl implements MemberService {
     public MemberVo findByMemberName(String name) {
         return memberMapper.toVo(
                 memberRepository.findByMemberName(name)
+        );
+    }
+
+    @Override
+    public void createMember(MemberCreateDto memberCreateDto) {
+        memberRepository.save(
+                memberMapper.toCreateEntity(memberCreateDto)
         );
     }
 }
