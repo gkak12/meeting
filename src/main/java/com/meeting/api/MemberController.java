@@ -1,6 +1,7 @@
 package com.meeting.api;
 
 import com.meeting.domain.dto.MemberCreateDto;
+import com.meeting.domain.dto.MemberUpdateDto;
 import com.meeting.domain.vo.MemberVo;
 import com.meeting.service.MemberService;
 import jakarta.validation.Valid;
@@ -39,6 +40,13 @@ public class MemberController {
     @PostMapping
     public ResponseEntity<Void> createMember(@RequestBody @Valid MemberCreateDto memberCreateDto){
         memberService.createMember(memberCreateDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping
+    public ResponseEntity<Void> updateMember(@RequestBody @Valid MemberUpdateDto memberUpdateDto){
+        memberService.updateMember(memberUpdateDto);
         return ResponseEntity.ok().build();
     }
 }

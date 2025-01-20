@@ -1,6 +1,8 @@
 package com.meeting.service.imp;
 
 import com.meeting.domain.dto.MemberCreateDto;
+import com.meeting.domain.dto.MemberUpdateDto;
+import com.meeting.domain.entity.Member;
 import com.meeting.domain.mapper.MemberMapper;
 import com.meeting.domain.vo.MemberVo;
 import com.meeting.repository.MemberRepository;
@@ -38,5 +40,14 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(
                 memberMapper.toCreateEntity(memberCreateDto)
         );
+    }
+
+    @Override
+    public void updateMember(MemberUpdateDto memberUpdateDto) {
+        Long memberSeq = memberUpdateDto.getMemberSeq();
+        Member member = memberRepository.findById(memberSeq).orElseThrow(() -> new NullPointerException("member is not found."));
+        memberMapper.toUpdateEntity(memberUpdateDto, member);
+
+        memberRepository.save(member);
     }
 }
