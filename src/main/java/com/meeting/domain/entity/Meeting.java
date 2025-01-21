@@ -19,8 +19,8 @@ public class Meeting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long meetingSeq;
 
-    @Column(name = "MEETING_DATE")
-    private LocalDateTime meetingDate;
+    @Column(name = "MEETING_DATE_TIME")
+    private LocalDateTime meetingDateTime;
 
     @Column(name = "MEETING_PLACE", length = 50)
     private String meetingPlace;

@@ -2,6 +2,7 @@ package com.meeting.service.imp;
 
 import com.meeting.domain.dto.MeetingSearchDateDto;
 import com.meeting.domain.mapper.MeetingMapper;
+import com.meeting.domain.vo.MeetingContentVo;
 import com.meeting.domain.vo.MeetingVo;
 import com.meeting.repository.MeetingRepository;
 import com.meeting.service.MeetingService;
@@ -31,5 +32,10 @@ public class MeetingServiceImpl implements MeetingService {
         return meetingRepository.findMeetingsByMeetingDate(meetingSearchDateDto).stream()
                 .map(meetingMapper::toVo)
                 .toList();
+    }
+
+    @Override
+    public List<MeetingContentVo> findMeetingsByContentName(String contentName) {
+        return meetingRepository.findMeetingsByContentName(contentName);
     }
 }

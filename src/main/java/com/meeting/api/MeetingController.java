@@ -1,16 +1,15 @@
 package com.meeting.api;
 
 import com.meeting.domain.dto.MeetingSearchDateDto;
+import com.meeting.domain.vo.MeetingContentVo;
 import com.meeting.domain.vo.MeetingVo;
 import com.meeting.service.MeetingService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +30,15 @@ public class MeetingController {
     @GetMapping("/date-search")
     public ResponseEntity<List<MeetingVo>> findMeetingsByMeetingDate(@ParameterObject MeetingSearchDateDto meetingSearchDateDto){
         return ResponseEntity.ok(meetingService.findMeetingsByMeetingDate(meetingSearchDateDto));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/content-name/{contentName}")
+    public ResponseEntity<List<MeetingContentVo>> findMeetingsByContentName(@PathVariable String contentName){
+        if(StringUtils.isBlank(contentName)){
+            throw new IllegalArgumentException("contentName is blank.");
+        }
+
+        return ResponseEntity.ok(meetingService.findMeetingsByContentName(contentName));
     }
 }
