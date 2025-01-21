@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -64,14 +65,18 @@ public class MeetingJsonParser {
             JsonNode rootNode = objectMapper.readTree(inputStream);
 
             // 각 요소 파싱
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String dateStr = rootNode.get("date").asText();
             String contentStr = rootNode.get("content").asText();
             String placeStr = rootNode.get("place").asText();
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateStr = rootNode.get("date").asText();
+            LocalDateTime localDateTime = LocalDateTime.parse(dateStr, formatter)
+                    .atZone(ZoneId.of("Asia/Seoul"))
+                    .toLocalDateTime();
+
             // Meeting entity 생성
             Meeting meeting = new Meeting();
-            meeting.setMeetingDate(LocalDateTime.parse(dateStr, formatter));
+            meeting.setMeetingDateTime(localDateTime);
             meeting.setMeetingPlace(placeStr);
             meetingRepository.save(meeting);
 
