@@ -51,9 +51,7 @@ public class MeetingJsonParser {
         });
 
         // JSON 파일 파싱
-        for(File file : files){
-            parseJsonFile(file.getPath());
-        }
+        Arrays.stream(files).forEach(file -> parseJsonFile(file.getPath()));
     }
 
     private void parseJsonFile(String filePath){
