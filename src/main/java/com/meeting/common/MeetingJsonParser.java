@@ -24,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -42,16 +43,18 @@ public class MeetingJsonParser {
         File dir = new File("E:\\json");
         File[] files = dir.listFiles();
 
-        // json 파일명 숫자 기준 오름차순 정렬
-        Arrays.sort(files, (file1, file2) -> {
-            String name1 = file1.getName().replaceAll("\\D", "");
-            String name2 = file2.getName().replaceAll("\\D", "");
+        Objects.requireNonNull(files, "json files are empty.");
 
-            return Integer.compare(Integer.parseInt(name1), Integer.parseInt(name2));
-        });
+        Arrays.stream(files)
+                .sorted((file1, file2) -> { // json 파일명 숫자 기준 오름차순 정렬
+                    String name1 = file1.getName().replaceAll("\\D", "");
+                    String name2 = file2.getName().replaceAll("\\D", "");
 
-        // JSON 파일 파싱
-        Arrays.stream(files).forEach(file -> parseJsonFile(file.getPath()));
+                    return Integer.compare(Integer.parseInt(name1), Integer.parseInt(name2));
+                })
+                .forEach(file -> {  // JSON 파일 파싱
+                    parseJsonFile(file.getPath());
+                });
     }
 
     private void parseJsonFile(String filePath){
@@ -98,7 +101,7 @@ public class MeetingJsonParser {
             attendants.forEach(item -> memberMap.put(item.asText(), true));
             nonAttendants.forEach(item -> memberMap.put(item.asText(), false));
 
-            memberMap.keySet().stream()
+            memberMap.keySet()
                 .forEach(item -> {
                     // Member entity 조회
                     Member member = memberRepository.findByMemberName(item);
