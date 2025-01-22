@@ -4,7 +4,9 @@ import com.meeting.common.ConditionBuilder;
 import com.meeting.domain.dto.MeetingSearchDateDto;
 import com.meeting.domain.entity.Meeting;
 import com.meeting.domain.vo.MeetingContentVo;
+import com.meeting.domain.vo.MeetingMemberVo;
 import com.meeting.repository.MeetingRepositoryDsl;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,8 @@ import java.util.List;
 
 import static com.meeting.domain.entity.QContent.content;
 import static com.meeting.domain.entity.QMeeting.meeting;
+import static com.meeting.domain.entity.QMeetingMember.meetingMember;
+import static com.meeting.domain.entity.QMember.member;
 
 @Slf4j
 @Repository
@@ -53,5 +57,66 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
                 .on(meeting.meetingSeq.eq(content.meeting.meetingSeq))
                 .where(content.contentName.like("%"+contentName+"%"))
                 .fetch();
+    }
+
+    @Override
+    public MeetingMemberVo findMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto) {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder
+            .and(
+                ConditionBuilder.buildDateBetween(
+                    meeting.meetingDateTime,
+                    meetingSearchDateDto.getStartDate(),
+                    meetingSearchDateDto.getEndDate()
+                )
+            )
+            .and(
+                    meetingMember.isAttendance.eq(true)
+            );
+
+        MeetingMemberVo meetingMemberVo = jpaQueryFactory
+                .select(Projections.fields(
+                        MeetingMemberVo.class,
+                        meeting.meetingSeq,
+                        content.contentName,
+                        meeting.meetingDateTime,
+                        meeting.meetingPlace,
+                        meetingMember.member.memberSeq.count().as("num")
+                        )
+                )
+                .from(meeting)
+                .leftJoin(meetingMember)
+                .on(meeting.meetingSeq.eq(meetingMember.meeting.meetingSeq))
+                .leftJoin(content)
+                .on(meeting.meetingSeq.eq(content.meeting.meetingSeq))
+                .where(builder)
+                .groupBy(meeting.meetingSeq)
+                .orderBy(meetingMember.member.memberSeq.count().desc())
+                .limit(1)
+                .fetchOne()
+                ;
+
+        builder = new BooleanBuilder();
+        builder
+            .and(
+                meetingMember.meeting.meetingSeq.eq(meetingMemberVo.getMeetingSeq())
+            )
+            .and(
+                meetingMember.isAttendance.eq(true)
+            );
+
+        List<MeetingMemberVo.Member> members = jpaQueryFactory
+                .select(Projections.fields(
+                        MeetingMemberVo.Member.class,
+                        member.memberName
+                ))
+                .from(meetingMember)
+                .leftJoin(member)
+                .on(meetingMember.member.memberSeq.eq(member.memberSeq))
+                .where(builder)
+                .fetch();
+        meetingMemberVo.setMembers(members);
+
+        return meetingMemberVo;
     }
 }

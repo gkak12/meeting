@@ -2,6 +2,7 @@ package com.meeting.api;
 
 import com.meeting.domain.dto.MeetingSearchDateDto;
 import com.meeting.domain.vo.MeetingContentVo;
+import com.meeting.domain.vo.MeetingMemberVo;
 import com.meeting.domain.vo.MeetingVo;
 import com.meeting.service.MeetingService;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,11 @@ public class MeetingController {
         }
 
         return ResponseEntity.ok(meetingService.findMeetingsByContentName(contentName));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/date-search/max")
+    public ResponseEntity<MeetingMemberVo> findMaxMembersMeeting(@ParameterObject MeetingSearchDateDto meetingSearchDateDto){
+        return ResponseEntity.ok(meetingService.findMaxMembersMeeting(meetingSearchDateDto));
     }
 }
