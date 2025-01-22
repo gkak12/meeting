@@ -8,6 +8,7 @@ import com.meeting.domain.vo.MeetingMemberVo;
 import com.meeting.repository.MeetingRepositoryDsl;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +61,7 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
     }
 
     @Override
-    public MeetingMemberVo findMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto) {
+    public MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto) {
         BooleanBuilder builder = new BooleanBuilder();
         builder
             .and(
@@ -74,7 +75,7 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
                     meetingMember.isAttendance.eq(true)
             );
 
-        MeetingMemberVo meetingMemberVo = jpaQueryFactory
+        JPAQuery<MeetingMemberVo> jpaQuery = jpaQueryFactory
                 .select(Projections.fields(
                         MeetingMemberVo.class,
                         meeting.meetingSeq,
@@ -90,11 +91,17 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
                 .leftJoin(content)
                 .on(meeting.meetingSeq.eq(content.meeting.meetingSeq))
                 .where(builder)
-                .groupBy(meeting.meetingSeq)
-                .orderBy(meetingMember.member.memberSeq.count().desc())
-                .limit(1)
-                .fetchOne()
-                ;
+                .groupBy(meeting.meetingSeq);
+
+        if("Y".equals(meetingSearchDateDto.getMinMaxFlag())){
+            jpaQuery
+                    .orderBy(meetingMember.member.memberSeq.count().desc());
+        } else{
+            jpaQuery
+                    .orderBy(meetingMember.member.memberSeq.count().asc());
+        }
+
+        MeetingMemberVo meetingMemberVo = jpaQuery.fetchFirst();
 
         builder = new BooleanBuilder();
         builder

@@ -12,5 +12,5 @@ public interface MeetingService {
     List<MeetingVo> findAllMeetings();
     List<MeetingVo> findMeetingsByMeetingDate(MeetingSearchDateDto meetingSearchDateDto);
     List<MeetingContentVo> findMeetingsByContentName(String contentName);
-    MeetingMemberVo findMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto);
+    MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto);
 }

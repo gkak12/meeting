@@ -11,5 +11,5 @@ public interface MeetingRepositoryDsl {
 
     List<Meeting> findMeetingsByMeetingDate(MeetingSearchDateDto meetingSearchDateDto);
     List<MeetingContentVo> findMeetingsByContentName(String contentName);
-    MeetingMemberVo findMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto);
+    MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto);
 }

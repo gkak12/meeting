@@ -44,8 +44,8 @@ public class MeetingController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/date-search/max")
-    public ResponseEntity<MeetingMemberVo> findMaxMembersMeeting(@ParameterObject MeetingSearchDateDto meetingSearchDateDto){
-        return ResponseEntity.ok(meetingService.findMaxMembersMeeting(meetingSearchDateDto));
+    @GetMapping("/date-search/min-max")
+    public ResponseEntity<MeetingMemberVo> findMinMaxMembersMeeting(@ParameterObject MeetingSearchDateDto meetingSearchDateDto){
+        return ResponseEntity.ok(meetingService.findMinMaxMembersMeeting(meetingSearchDateDto));
     }
 }

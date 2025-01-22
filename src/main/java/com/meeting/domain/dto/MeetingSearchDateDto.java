@@ -24,4 +24,6 @@ public class MeetingSearchDateDto {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDateTime;
+
+    private String minMaxFlag;
 }

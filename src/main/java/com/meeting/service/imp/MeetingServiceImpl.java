@@ -41,7 +41,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public MeetingMemberVo findMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto) {
-        return meetingRepository.findMaxMembersMeeting(meetingSearchDateDto);
+    public MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto) {
+        return meetingRepository.findMinMaxMembersMeeting(meetingSearchDateDto);
     }
 }
