@@ -2,6 +2,7 @@ package com.meeting.service.imp;
 
 import com.meeting.domain.dto.MeetingSearchDateDto;
 import com.meeting.domain.mapper.MeetingMapper;
+import com.meeting.domain.vo.MeetingAttendanceVo;
 import com.meeting.domain.vo.MeetingContentVo;
 import com.meeting.domain.vo.MeetingMemberVo;
 import com.meeting.domain.vo.MeetingVo;
@@ -43,5 +44,10 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto) {
         return meetingRepository.findMinMaxMembersMeeting(meetingSearchDateDto);
+    }
+
+    @Override
+    public List<MeetingAttendanceVo> findMeetingAttendanceByMeetingDate(MeetingSearchDateDto meetingSearchDateDto) {
+        return meetingRepository.findMeetingAttendanceByMeetingDate(meetingSearchDateDto);
     }
 }

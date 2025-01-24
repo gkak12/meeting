@@ -4,6 +4,7 @@ import com.meeting.common.bean.ConditionBuilder;
 import com.meeting.common.enums.YnEnum;
 import com.meeting.domain.dto.MeetingSearchDateDto;
 import com.meeting.domain.entity.Meeting;
+import com.meeting.domain.vo.MeetingAttendanceVo;
 import com.meeting.domain.vo.MeetingContentVo;
 import com.meeting.domain.vo.MeetingMemberVo;
 import com.meeting.repository.MeetingRepositoryDsl;
@@ -126,5 +127,34 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
         meetingMemberVo.setMembers(members);
 
         return meetingMemberVo;
+    }
+
+    @Override
+    public List<MeetingAttendanceVo> findMeetingAttendanceByMeetingDate(MeetingSearchDateDto meetingSearchDateDto) {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder
+            .and(
+                ConditionBuilder.buildDateBetween(
+                        meeting.meetingDateTime,
+                        meetingSearchDateDto.getStartDate(),
+                        meetingSearchDateDto.getEndDate()
+                )
+            )
+            .and(
+                meetingMember.isAttendance.eq(true)
+            );
+
+        return jpaQueryFactory
+                .select(Projections.fields(
+                        MeetingAttendanceVo.class,
+                        meeting.meetingDateTime,
+                        meetingMember.member.count().as("meetingAttendanceNum")
+                ))
+                .from(meeting)
+                .leftJoin(meetingMember)
+                .on(meeting.meetingSeq.eq(meetingMember.meeting.meetingSeq))
+                .where(builder)
+                .groupBy(meeting.meetingSeq)
+                .fetch();
     }
 }

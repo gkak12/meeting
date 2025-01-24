@@ -1,6 +1,7 @@
 package com.meeting.api;
 
 import com.meeting.domain.dto.MeetingSearchDateDto;
+import com.meeting.domain.vo.MeetingAttendanceVo;
 import com.meeting.domain.vo.MeetingContentVo;
 import com.meeting.domain.vo.MeetingMemberVo;
 import com.meeting.domain.vo.MeetingVo;
@@ -47,5 +48,11 @@ public class MeetingController {
     @GetMapping("/date-search/min-max")
     public ResponseEntity<MeetingMemberVo> findMinMaxMembersMeeting(@ParameterObject MeetingSearchDateDto meetingSearchDateDto){
         return ResponseEntity.ok(meetingService.findMinMaxMembersMeeting(meetingSearchDateDto));
+    }
+    
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/date-search/attendance")
+    public ResponseEntity<List<MeetingAttendanceVo>> findMeetingAttendanceByMeetingDate(@ParameterObject MeetingSearchDateDto meetingSearchDateDto){
+        return ResponseEntity.ok(meetingService.findMeetingAttendanceByMeetingDate(meetingSearchDateDto));
     }
 }
