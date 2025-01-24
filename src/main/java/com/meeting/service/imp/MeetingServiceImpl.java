@@ -48,6 +48,8 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public List<MeetingAttendanceVo> findMeetingAttendanceByMeetingDate(MeetingSearchDateDto meetingSearchDateDto) {
-        return meetingRepository.findMeetingAttendanceByMeetingDate(meetingSearchDateDto);
+        return meetingRepository.findMeetingAttendanceByMeetingDate(meetingSearchDateDto).stream()
+                .map(meetingMapper::toAttendanceVo)
+                .toList();
     }
 }
