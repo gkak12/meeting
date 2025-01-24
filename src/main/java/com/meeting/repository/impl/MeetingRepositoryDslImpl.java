@@ -1,6 +1,7 @@
 package com.meeting.repository.impl;
 
 import com.meeting.common.bean.ConditionBuilder;
+import com.meeting.common.enums.YnEnum;
 import com.meeting.domain.dto.MeetingSearchDateDto;
 import com.meeting.domain.entity.Meeting;
 import com.meeting.domain.vo.MeetingContentVo;
@@ -93,7 +94,7 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
                 .where(builder)
                 .groupBy(meeting.meetingSeq);
 
-        if("Y".equals(meetingSearchDateDto.getMinMaxFlag())){
+        if(YnEnum.TRUE.getYnVal().equals(meetingSearchDateDto.getMinMaxFlag())){
             jpaQuery
                     .orderBy(meetingMember.member.memberSeq.count().desc());
         } else{
