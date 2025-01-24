@@ -1,6 +1,6 @@
 package com.meeting.repository.impl;
 
-import com.meeting.common.ConditionBuilder;
+import com.meeting.common.bean.ConditionBuilder;
 import com.meeting.domain.dto.MeetingSearchDateDto;
 import com.meeting.domain.entity.Meeting;
 import com.meeting.domain.vo.MeetingContentVo;

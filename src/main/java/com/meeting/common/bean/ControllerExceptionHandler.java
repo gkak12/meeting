@@ -1,4 +1,4 @@
-package com.meeting.common;
+package com.meeting.common.bean;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
