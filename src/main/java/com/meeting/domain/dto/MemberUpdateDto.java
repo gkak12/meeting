@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class MemberUpdateDto {
 
     @NotNull
-    @Min(0)
+    @Min(1)
     private Long memberSeq;
 
     private String memberName;
