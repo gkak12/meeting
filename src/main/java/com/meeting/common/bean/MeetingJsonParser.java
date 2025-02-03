@@ -14,6 +14,7 @@ import com.meeting.repository.MemberRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -25,7 +26,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
 @Component
@@ -39,12 +39,18 @@ public class MeetingJsonParser {
     private final MemberRepository memberRepository;
     private final MeetingMemberRepository meetingMemberRepository;
 
+    @Value("${json.location}")
+    private String jsonLocation;
+
     @PostConstruct
     public void readJsonFiles(){
-        File dir = new File("E:\\json");
+        File dir = new File(jsonLocation);
         File[] files = dir.listFiles();
 
-        Objects.requireNonNull(files, "json files are empty.");
+        if(files == null || files.length == 0){
+            log.error("json files are empty.");
+            return;
+        }
 
         Arrays.stream(files)
                 .sorted((file1, file2) -> { // json 파일명 숫자 기준 오름차순 정렬
@@ -95,7 +101,7 @@ public class MeetingJsonParser {
             log.info("date: {}", dateStr);
             log.info("content: {}", contentStr);
             log.info("place: {}", placeStr);
-            
+
             // Member 참석 여부 Map 생성
             Map<String, Boolean> memberMap = new HashMap<>();
 
@@ -103,27 +109,27 @@ public class MeetingJsonParser {
             nonAttendants.forEach(item -> memberMap.put(item.asText(), YnEnum.FALSE.getBoolVal()));
 
             memberMap.keySet()
-                .forEach(item -> {
-                    // Member entity 조회
-                    Member member = memberRepository.findByMemberName(item);
+                    .forEach(item -> {
+                        // Member entity 조회
+                        Member member = memberRepository.findByMemberName(item);
 
-                    // Member entity 생성
-                    if(member == null){
-                        Member newMember = new Member();
-                        newMember.setMemberName(item);
-                        newMember.setIsDeleted(false);
-                        memberRepository.save(newMember);
+                        // Member entity 생성
+                        if(member == null){
+                            Member newMember = new Member();
+                            newMember.setMemberName(item);
+                            newMember.setIsDeleted(false);
+                            memberRepository.save(newMember);
 
-                        member = newMember;
-                    }
+                            member = newMember;
+                        }
 
-                    // MeetingMember entity 생성
-                    MeetingMember meetingMember = new MeetingMember();
-                    meetingMember.setIsAttendance(memberMap.get(item));
-                    meetingMember.setMeeting(meeting);
-                    meetingMember.setMember(member);
-                    meetingMemberRepository.save(meetingMember);
-                });
+                        // MeetingMember entity 생성
+                        MeetingMember meetingMember = new MeetingMember();
+                        meetingMember.setIsAttendance(memberMap.get(item));
+                        meetingMember.setMeeting(meeting);
+                        meetingMember.setMember(member);
+                        meetingMemberRepository.save(meetingMember);
+                    });
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
