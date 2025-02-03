@@ -1,6 +1,6 @@
 package com.meeting.service.imp;
 
-import com.meeting.domain.dto.MeetingSearchDateDto;
+import com.meeting.domain.dto.MeetingSearchDto;
 import com.meeting.domain.mapper.MeetingMapper;
 import com.meeting.domain.vo.MeetingAttendanceVo;
 import com.meeting.domain.vo.MeetingContentVo;
@@ -30,8 +30,8 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<MeetingVo> findMeetingsByMeetingDate(MeetingSearchDateDto meetingSearchDateDto) {
-        return meetingRepository.findMeetingsByMeetingDate(meetingSearchDateDto).stream()
+    public List<MeetingVo> findMeetingsByMeetingDate(MeetingSearchDto meetingSearchDto) {
+        return meetingRepository.findMeetingsByMeetingDate(meetingSearchDto).stream()
                 .map(meetingMapper::toVo)
                 .toList();
     }
@@ -42,13 +42,13 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto) {
-        return meetingRepository.findMinMaxMembersMeeting(meetingSearchDateDto);
+    public MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDto meetingSearchDto) {
+        return meetingRepository.findMinMaxMembersMeeting(meetingSearchDto);
     }
 
     @Override
-    public List<MeetingAttendanceVo> findMeetingAttendanceByMeetingDate(MeetingSearchDateDto meetingSearchDateDto) {
-        return meetingRepository.findMeetingAttendanceByMeetingDate(meetingSearchDateDto).stream()
+    public List<MeetingAttendanceVo> findMeetingAttendanceByMeetingDate(MeetingSearchDto meetingSearchDto) {
+        return meetingRepository.findMeetingAttendanceByMeetingDate(meetingSearchDto).stream()
                 .map(meetingMapper::toAttendanceVo)
                 .toList();
     }

@@ -1,6 +1,6 @@
 package com.meeting.api;
 
-import com.meeting.domain.dto.MeetingSearchDateDto;
+import com.meeting.domain.dto.MeetingSearchDto;
 import com.meeting.domain.vo.MeetingAttendanceVo;
 import com.meeting.domain.vo.MeetingContentVo;
 import com.meeting.domain.vo.MeetingMemberVo;
@@ -30,8 +30,8 @@ public class MeetingController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/date-search")
-    public ResponseEntity<List<MeetingVo>> findMeetingsByMeetingDate(@ParameterObject MeetingSearchDateDto meetingSearchDateDto){
-        return ResponseEntity.ok(meetingService.findMeetingsByMeetingDate(meetingSearchDateDto));
+    public ResponseEntity<List<MeetingVo>> findMeetingsByMeetingDate(@ParameterObject MeetingSearchDto meetingSearchDto){
+        return ResponseEntity.ok(meetingService.findMeetingsByMeetingDate(meetingSearchDto));
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -46,13 +46,13 @@ public class MeetingController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/date-search/min-max")
-    public ResponseEntity<MeetingMemberVo> findMinMaxMembersMeeting(@ParameterObject MeetingSearchDateDto meetingSearchDateDto){
-        return ResponseEntity.ok(meetingService.findMinMaxMembersMeeting(meetingSearchDateDto));
+    public ResponseEntity<MeetingMemberVo> findMinMaxMembersMeeting(@ParameterObject MeetingSearchDto meetingSearchDto){
+        return ResponseEntity.ok(meetingService.findMinMaxMembersMeeting(meetingSearchDto));
     }
     
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/date-search/attendance")
-    public ResponseEntity<List<MeetingAttendanceVo>> findMeetingAttendanceByMeetingDate(@ParameterObject MeetingSearchDateDto meetingSearchDateDto){
-        return ResponseEntity.ok(meetingService.findMeetingAttendanceByMeetingDate(meetingSearchDateDto));
+    public ResponseEntity<List<MeetingAttendanceVo>> findMeetingAttendanceByMeetingDate(@ParameterObject MeetingSearchDto meetingSearchDto){
+        return ResponseEntity.ok(meetingService.findMeetingAttendanceByMeetingDate(meetingSearchDto));
     }
 }

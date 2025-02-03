@@ -2,7 +2,7 @@ package com.meeting.repository.impl;
 
 import com.meeting.common.bean.ConditionBuilder;
 import com.meeting.common.enums.YnEnum;
-import com.meeting.domain.dto.MeetingSearchDateDto;
+import com.meeting.domain.dto.MeetingSearchDto;
 import com.meeting.domain.entity.Meeting;
 import com.meeting.domain.vo.MeetingContentVo;
 import com.meeting.domain.vo.MeetingMemberVo;
@@ -31,14 +31,14 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Meeting> findMeetingsByMeetingDate(MeetingSearchDateDto meetingSearchDateDto) {
+    public List<Meeting> findMeetingsByMeetingDate(MeetingSearchDto meetingSearchDto) {
         return jpaQueryFactory
                 .selectFrom(meeting)
                 .where(
                         ConditionBuilder.buildDateBetween(
                                 meeting.meetingDateTime,
-                                meetingSearchDateDto.getStartDate(),
-                                meetingSearchDateDto.getEndDate()
+                                meetingSearchDto.getStartDate(),
+                                meetingSearchDto.getEndDate()
                         )
                 )
                 .fetch();
@@ -63,14 +63,14 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
     }
 
     @Override
-    public MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDateDto meetingSearchDateDto) {
+    public MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDto meetingSearchDto) {
         BooleanBuilder builder = new BooleanBuilder();
         builder
             .and(
                 ConditionBuilder.buildDateBetween(
                     meeting.meetingDateTime,
-                    meetingSearchDateDto.getStartDate(),
-                    meetingSearchDateDto.getEndDate()
+                    meetingSearchDto.getStartDate(),
+                    meetingSearchDto.getEndDate()
                 )
             )
             .and(
@@ -95,7 +95,7 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
                 .where(builder)
                 .groupBy(meeting.meetingSeq);
 
-        if(YnEnum.TRUE.getYnVal().equals(meetingSearchDateDto.getMinMaxFlag())){
+        if(YnEnum.TRUE.getYnVal().equals(meetingSearchDto.getMinMaxFlag())){
             jpaQuery
                     .orderBy(meetingMember.member.memberSeq.count().desc());
         } else{
@@ -130,14 +130,14 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
     }
 
     @Override
-    public List<Tuple> findMeetingAttendanceByMeetingDate(MeetingSearchDateDto meetingSearchDateDto) {
+    public List<Tuple> findMeetingAttendanceByMeetingDate(MeetingSearchDto meetingSearchDto) {
         BooleanBuilder builder = new BooleanBuilder();
         builder
             .and(
                 ConditionBuilder.buildDateBetween(
                         meeting.meetingDateTime,
-                        meetingSearchDateDto.getStartDate(),
-                        meetingSearchDateDto.getEndDate()
+                        meetingSearchDto.getStartDate(),
+                        meetingSearchDto.getEndDate()
                 )
             )
             .and(
