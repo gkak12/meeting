@@ -1,10 +1,7 @@
 package com.meeting.api;
 
 import com.meeting.domain.dto.MeetingSearchDto;
-import com.meeting.domain.vo.MeetingAttendanceVo;
-import com.meeting.domain.vo.MeetingContentVo;
-import com.meeting.domain.vo.MeetingMemberVo;
-import com.meeting.domain.vo.MeetingVo;
+import com.meeting.domain.vo.*;
 import com.meeting.service.MeetingService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +23,12 @@ public class MeetingController {
     @GetMapping
     public ResponseEntity<List<MeetingVo>> findAllMeetings(){
         return ResponseEntity.ok(meetingService.findAllMeetings());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/page")
+    public ResponseEntity<MeetingListVo> findPageMeetings(@ParameterObject MeetingSearchDto meetingSearchDto){
+        return ResponseEntity.ok(meetingService.findPageMeetings(meetingSearchDto));
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -14,9 +14,14 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.meeting.domain.entity.QContent.content;
 import static com.meeting.domain.entity.QMeeting.meeting;
@@ -31,14 +36,46 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Meeting> findMeetingsByMeetingDate(MeetingSearchDto meetingSearchDto) {
+    public Page<Meeting> findMeetingsPaging(MeetingSearchDto searchDto) {
+        Pageable pageable = PageRequest.of(
+                searchDto.getPageNumber(),
+                searchDto.getPageSize()
+        );
+
+        BooleanBuilder builder = new BooleanBuilder();
+        builder
+                .and(ConditionBuilder.buildEquals(meeting.meetingSeq, searchDto.getMeetingSeq()))
+                .and(ConditionBuilder.buildStringLike(meeting.meetingPlace, searchDto.getMeetingPlace()))
+                .and(ConditionBuilder.buildDateBetween(meeting.meetingDateTime, searchDto.getStartDate(), searchDto.getEndDate()));
+
+        List<Meeting> list = jpaQueryFactory
+                .select(meeting)
+                .from(meeting)
+                .where(builder)
+                .offset(searchDto.getPageOffset())
+                .limit(searchDto.getPageSize())
+                .fetch();
+
+        Long count = Optional.ofNullable(
+                jpaQueryFactory
+                        .select(meeting.count().as("count"))
+                        .from(meeting)
+                        .where(builder)
+                        .fetchOne()
+        ).orElse(0L);
+
+        return new PageImpl<>(list, pageable, count);
+    }
+
+    @Override
+    public List<Meeting> findMeetingsByMeetingDate(MeetingSearchDto searchDto) {
         return jpaQueryFactory
                 .selectFrom(meeting)
                 .where(
                         ConditionBuilder.buildDateBetween(
                                 meeting.meetingDateTime,
-                                meetingSearchDto.getStartDate(),
-                                meetingSearchDto.getEndDate()
+                                searchDto.getStartDate(),
+                                searchDto.getEndDate()
                         )
                 )
                 .fetch();

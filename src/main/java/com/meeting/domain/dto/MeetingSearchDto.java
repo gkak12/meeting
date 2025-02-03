@@ -1,17 +1,17 @@
 package com.meeting.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MeetingSearchDto {
+@EqualsAndHashCode(callSuper = true)
+public class MeetingSearchDto extends PageDto {
 
     private Long meetingSeq;
 

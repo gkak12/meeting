@@ -1,14 +1,13 @@
 package com.meeting.service.imp;
 
 import com.meeting.domain.dto.MeetingSearchDto;
+import com.meeting.domain.entity.Meeting;
 import com.meeting.domain.mapper.MeetingMapper;
-import com.meeting.domain.vo.MeetingAttendanceVo;
-import com.meeting.domain.vo.MeetingContentVo;
-import com.meeting.domain.vo.MeetingMemberVo;
-import com.meeting.domain.vo.MeetingVo;
+import com.meeting.domain.vo.*;
 import com.meeting.repository.MeetingRepository;
 import com.meeting.service.MeetingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +23,28 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public List<MeetingVo> findAllMeetings() {
-            return meetingRepository.findAll().stream()
+        return meetingRepository.findAll().stream()
+            .map(meetingMapper::toVo)
+            .toList();
+    }
+
+    @Override
+    public MeetingListVo findPageMeetings(MeetingSearchDto meetingSearchDto) {
+        Page<Meeting> page = meetingRepository.findMeetingsPaging(meetingSearchDto);
+
+        PageVo pageVo = PageVo.builder()
+                .totalPages(page.getTotalPages())
+                .totalItems(page.getTotalElements())
+                .build();
+
+        List<MeetingVo> list = page.get().toList().stream()
                 .map(meetingMapper::toVo)
                 .toList();
+
+        return MeetingListVo.builder()
+                .page(pageVo)
+                .list(list)
+                .build();
     }
 
     @Override
