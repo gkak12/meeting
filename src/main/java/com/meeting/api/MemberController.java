@@ -1,17 +1,15 @@
 package com.meeting.api;
 
+import com.meeting.common.annotation.ValidSeq;
 import com.meeting.domain.dto.MemberCreateDto;
 import com.meeting.domain.dto.MemberUpdateDto;
 import com.meeting.domain.vo.MemberVo;
 import com.meeting.service.MemberService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,11 +53,7 @@ public class MemberController {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{memberSeq}")
-    public ResponseEntity<Void> deleteMember(@PathVariable Long memberSeq){
-        if(memberSeq == null || memberSeq <= 1){
-            throw new IllegalArgumentException("memberSeq is null or less than 1.");
-        }
-
+    public ResponseEntity<Void> deleteMember(@PathVariable @Valid @ValidSeq Long memberSeq){
         memberService.deleteMember(memberSeq);
         return ResponseEntity.ok().build();
     }
