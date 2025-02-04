@@ -1,13 +1,13 @@
 package com.meeting.api;
 
 import com.meeting.common.annotation.ValidSeq;
+import com.meeting.common.annotation.ValidString;
 import com.meeting.domain.dto.MemberCreateDto;
 import com.meeting.domain.dto.MemberUpdateDto;
 import com.meeting.domain.vo.MemberVo;
 import com.meeting.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +29,7 @@ public class MemberController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/name/{name}")
-    public ResponseEntity<MemberVo> findByMemberName(@PathVariable String name){
-        if(StringUtils.isBlank(name)){
-            throw new IllegalArgumentException("name is empty.");
-        }
-
+    public ResponseEntity<MemberVo> findByMemberName(@PathVariable @Valid @ValidString String name){
         return ResponseEntity.ok(memberService.findByMemberName(name));
     }
     
