@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,9 +31,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberVo findByMemberName(String name) {
-        return memberMapper.toVo(
-                memberRepository.findByMemberName(name)
-        );
+        Member member = Objects.requireNonNull(memberRepository.findByMemberName(name), "member is not found.");
+        return memberMapper.toVo(member);
     }
 
     @Override
