@@ -1,7 +1,9 @@
 package com.meeting.repository.impl;
 
 import com.meeting.domain.entity.Content;
+import com.meeting.domain.vo.ContentVo;
 import com.meeting.repository.ContentRepositoryDsl;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,5 +26,18 @@ public class ContentRepositoryDslImpl implements ContentRepositoryDsl {
                 .selectFrom(content)
                 .where(content.contentName.like("%"+contentName+"%"))
                 .fetch();
+    }
+
+    @Override
+    public ContentVo findMostSelectedContent() {
+        return jpaQueryFactory
+                .select(Projections.fields(ContentVo.class,
+                        content.contentName,
+                        content.count().as("selectionNumber")
+                ))
+                .from(content)
+                .groupBy(content.contentSeq)
+                .orderBy(content.count().desc())
+                .fetchFirst();
     }
 }

@@ -31,4 +31,9 @@ public class ContentServiceImpl implements ContentService {
                 .map(contentMapper::toVo)
                 .toList();
     }
+
+    @Override
+    public ContentVo findMostSelectedContent() {
+        return contentRepository.findMostSelectedContent();
+    }
 }

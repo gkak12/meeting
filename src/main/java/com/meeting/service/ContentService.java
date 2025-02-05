@@ -8,4 +8,5 @@ public interface ContentService {
 
     List<ContentVo> findAllContents();
     List<ContentVo> findContentByContentName(String contentName);
+    ContentVo findMostSelectedContent();
 }

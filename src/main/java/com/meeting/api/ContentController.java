@@ -32,4 +32,10 @@ public class ContentController {
 
         return ResponseEntity.ok(contentService.findContentByContentName(name));
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/most-selected")
+    public ResponseEntity<ContentVo> findMostSelectedContent(){
+        return ResponseEntity.ok(contentService.findMostSelectedContent());
+    }
 }

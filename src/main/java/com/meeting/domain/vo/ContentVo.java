@@ -8,4 +8,5 @@ public class ContentVo {
     private String contentName;
     private String contentCreator;
     private String contentRecommender;
+    private Long selectionNumber;
 }
