@@ -2,7 +2,7 @@ package com.meeting.common.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.meeting.common.enums.YnEnum;
+import com.meeting.common.enums.YnEnums;
 import com.meeting.domain.entity.Content;
 import com.meeting.domain.entity.Meeting;
 import com.meeting.domain.entity.MeetingMember;
@@ -105,8 +105,8 @@ public class MeetingJsonParser {
             // Member 참석 여부 Map 생성
             Map<String, Boolean> memberMap = new HashMap<>();
 
-            attendants.forEach(item -> memberMap.put(item.asText(), YnEnum.TRUE.getBoolVal()));
-            nonAttendants.forEach(item -> memberMap.put(item.asText(), YnEnum.FALSE.getBoolVal()));
+            attendants.forEach(item -> memberMap.put(item.asText(), YnEnums.TRUE.getBoolVal()));
+            nonAttendants.forEach(item -> memberMap.put(item.asText(), YnEnums.FALSE.getBoolVal()));
 
             memberMap.keySet()
                     .forEach(item -> {

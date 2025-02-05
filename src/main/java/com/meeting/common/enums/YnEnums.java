@@ -3,7 +3,7 @@ package com.meeting.common.enums;
 import lombok.Getter;
 
 @Getter
-public enum YnEnum {
+public enum YnEnums {
 
     TRUE(true, "true", "Y", 1, "참인 경우 표시합니다."),
     FALSE(false, "false", "N", 0, "거짓인 경우 표시합니다.");
@@ -14,7 +14,7 @@ public enum YnEnum {
     private final Integer intVal;
     private final String desc;
 
-    YnEnum(Boolean boolVal, String strVal, String ynVal, Integer intVal, String desc) {
+    YnEnums(Boolean boolVal, String strVal, String ynVal, Integer intVal, String desc) {
         this.boolVal = boolVal;
         this.strVal = strVal;
         this.ynVal = ynVal;
