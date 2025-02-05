@@ -1,4 +1,4 @@
-package com.meeting.common.bean;
+package com.meeting.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
-public class ControllerExceptionHandler {
+public class MeetingExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(final IllegalArgumentException e) {

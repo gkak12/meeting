@@ -1,4 +1,4 @@
-package com.meeting.common.bean;
+package com.meeting.common.util;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTimePath;

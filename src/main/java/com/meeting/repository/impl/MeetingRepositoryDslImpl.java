@@ -1,6 +1,6 @@
 package com.meeting.repository.impl;
 
-import com.meeting.common.bean.ConditionBuilder;
+import com.meeting.common.util.ConditionBuilder;
 import com.meeting.common.enums.YnEnum;
 import com.meeting.domain.dto.MeetingSearchDto;
 import com.meeting.domain.entity.Meeting;

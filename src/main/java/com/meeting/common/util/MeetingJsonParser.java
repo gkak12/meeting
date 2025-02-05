@@ -1,4 +1,4 @@
-package com.meeting.common.bean;
+package com.meeting.common.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
