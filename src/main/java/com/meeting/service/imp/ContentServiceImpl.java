@@ -1,5 +1,7 @@
 package com.meeting.service.imp;
 
+import com.meeting.common.enums.MeetingErrorEnums;
+import com.meeting.common.exception.MeetingException;
 import com.meeting.domain.mapper.ContentMapper;
 import com.meeting.domain.vo.ContentVo;
 import com.meeting.repository.ContentRepository;
@@ -34,6 +36,12 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public ContentVo findMostSelectedContent() {
-        return contentRepository.findMostSelectedContent();
+        ContentVo contentVo = contentRepository.findMostSelectedContent();
+
+        if(contentVo.getSelectionNumber() == 1L){
+            throw new MeetingException(MeetingErrorEnums.INTERNAL_SERVER_ERROR, "작품 최다 선정 수가 1입니다.");
+        }
+
+        return contentVo;
     }
 }
