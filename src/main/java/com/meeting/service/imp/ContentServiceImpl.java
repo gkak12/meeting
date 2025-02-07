@@ -8,12 +8,10 @@ import com.meeting.repository.ContentRepository;
 import com.meeting.service.ContentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ContentServiceImpl implements ContentService {
 

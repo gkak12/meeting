@@ -9,13 +9,11 @@ import com.meeting.repository.MemberRepository;
 import com.meeting.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
@@ -36,7 +34,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    @Transactional
     public void createMember(MemberCreateDto memberCreateDto) {
         memberRepository.save(
                 memberMapper.toCreateEntity(memberCreateDto)
@@ -44,7 +41,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    @Transactional
     public void updateMember(MemberUpdateDto memberUpdateDto) {
         Long memberSeq = memberUpdateDto.getMemberSeq();
         Member member = memberRepository.findById(memberSeq).orElseThrow(() -> new NullPointerException("member is not found."));
@@ -54,7 +50,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    @Transactional
     public void deleteMember(Long memberSeq) {
         Member member = memberRepository.findById(memberSeq).orElseThrow(() -> new NullPointerException("member is not found."));
         member.setIsDeleted(true);
