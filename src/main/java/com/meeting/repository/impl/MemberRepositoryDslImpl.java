@@ -1,8 +1,10 @@
 package com.meeting.repository.impl;
 
+import com.meeting.common.enums.YnEnums;
 import com.meeting.domain.entity.Member;
 import com.meeting.domain.vo.MemberMeetingVo;
 import com.meeting.repository.MemberRepositoryDsl;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,11 @@ public class MemberRepositoryDslImpl implements MemberRepositoryDsl {
 
     @Override
     public List<MemberMeetingVo> findLatestMeeingEachMember() {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder
+            .and(member.isDeleted.eq(YnEnums.FALSE.getBoolVal()))
+            .and(meetingMember.isAttendance.eq(YnEnums.TRUE.getBoolVal()));
+
         return jpaQueryFactory
                 .select(Projections.fields(
                     MemberMeetingVo.class,
@@ -41,7 +48,7 @@ public class MemberRepositoryDslImpl implements MemberRepositoryDsl {
                 .from(member)
                 .leftJoin(meetingMember)
                 .on(member.memberSeq.eq(meetingMember.member.memberSeq))
-                .where(meetingMember.isAttendance.eq(true))
+                .where(builder)
                 .groupBy(member.memberSeq)
                 .fetch();
     }
