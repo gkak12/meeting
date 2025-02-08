@@ -4,6 +4,7 @@ import com.meeting.common.annotation.ValidSeq;
 import com.meeting.common.annotation.ValidString;
 import com.meeting.domain.dto.MemberCreateDto;
 import com.meeting.domain.dto.MemberUpdateDto;
+import com.meeting.domain.vo.MemberMeetingVo;
 import com.meeting.domain.vo.MemberVo;
 import com.meeting.service.MemberService;
 import jakarta.validation.Valid;
@@ -31,6 +32,12 @@ public class MemberController {
     @GetMapping("/name/{name}")
     public ResponseEntity<MemberVo> findByMemberName(@PathVariable @Valid @ValidString String name){
         return ResponseEntity.ok(memberService.findByMemberName(name));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/latest-meeing-each-member")
+    public ResponseEntity<List<MemberMeetingVo>> findLatestMeeingEachMember(){
+        return ResponseEntity.ok(memberService.findLatestMeeingEachMember());
     }
     
     @ResponseStatus(HttpStatus.OK)

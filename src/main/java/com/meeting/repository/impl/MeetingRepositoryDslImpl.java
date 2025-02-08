@@ -1,7 +1,7 @@
 package com.meeting.repository.impl;
 
-import com.meeting.common.util.ConditionBuilder;
 import com.meeting.common.enums.YnEnums;
+import com.meeting.common.util.ConditionBuilder;
 import com.meeting.domain.dto.MeetingSearchDto;
 import com.meeting.domain.entity.Meeting;
 import com.meeting.domain.vo.MeetingContentVo;
@@ -190,6 +190,17 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
                 .on(meeting.meetingSeq.eq(meetingMember.meeting.meetingSeq))
                 .where(builder)
                 .groupBy(meeting.meetingSeq)
+                .fetch();
+    }
+
+    @Override
+    public List<Meeting> findMeetingContent(List<Long> meetingSeqs) {
+        return jpaQueryFactory
+                .select(meeting)
+                .from(meeting)
+                .leftJoin(content)
+                .on(meeting.content.contentSeq.eq(content.contentSeq))
+                .where(meeting.meetingSeq.in(meetingSeqs))
                 .fetch();
     }
 }
