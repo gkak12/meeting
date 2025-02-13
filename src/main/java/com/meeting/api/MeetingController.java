@@ -1,7 +1,7 @@
 package com.meeting.api;
 
-import com.meeting.domain.dto.MeetingSearchDto;
-import com.meeting.domain.vo.*;
+import com.meeting.domain.dto.request.RequestMeetingSearchDtoRequest;
+import com.meeting.domain.dto.response.*;
 import com.meeting.service.MeetingService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -21,25 +21,25 @@ public class MeetingController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public ResponseEntity<List<MeetingVo>> findAllMeetings(){
+    public ResponseEntity<List<ResponseMeetingVo>> findAllMeetings(){
         return ResponseEntity.ok(meetingService.findAllMeetings());
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/page")
-    public ResponseEntity<MeetingListVo> findPageMeetings(@ParameterObject MeetingSearchDto meetingSearchDto){
-        return ResponseEntity.ok(meetingService.findPageMeetings(meetingSearchDto));
+    public ResponseEntity<ResponseMeetingListVo> findPageMeetings(@ParameterObject RequestMeetingSearchDtoRequest requestMeetingSearchDto){
+        return ResponseEntity.ok(meetingService.findPageMeetings(requestMeetingSearchDto));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/date-search")
-    public ResponseEntity<List<MeetingVo>> findMeetingsByMeetingDate(@ParameterObject MeetingSearchDto meetingSearchDto){
-        return ResponseEntity.ok(meetingService.findMeetingsByMeetingDate(meetingSearchDto));
+    public ResponseEntity<List<ResponseMeetingVo>> findMeetingsByMeetingDate(@ParameterObject RequestMeetingSearchDtoRequest requestMeetingSearchDto){
+        return ResponseEntity.ok(meetingService.findMeetingsByMeetingDate(requestMeetingSearchDto));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/content-name/{contentName}")
-    public ResponseEntity<List<MeetingContentVo>> findMeetingsByContentName(@PathVariable String contentName){
+    public ResponseEntity<List<ResponseMeetingContentVo>> findMeetingsByContentName(@PathVariable String contentName){
         if(StringUtils.isBlank(contentName)){
             throw new IllegalArgumentException("contentName is blank.");
         }
@@ -49,13 +49,13 @@ public class MeetingController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/date-search/min-max")
-    public ResponseEntity<MeetingMemberVo> findMinMaxMembersMeeting(@ParameterObject MeetingSearchDto meetingSearchDto){
-        return ResponseEntity.ok(meetingService.findMinMaxMembersMeeting(meetingSearchDto));
+    public ResponseEntity<ResponseMeetingMemberVo> findMinMaxMembersMeeting(@ParameterObject RequestMeetingSearchDtoRequest requestMeetingSearchDto){
+        return ResponseEntity.ok(meetingService.findMinMaxMembersMeeting(requestMeetingSearchDto));
     }
     
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/date-search/attendance")
-    public ResponseEntity<List<MeetingAttendanceVo>> findMeetingAttendanceByMeetingDate(@ParameterObject MeetingSearchDto meetingSearchDto){
-        return ResponseEntity.ok(meetingService.findMeetingAttendanceByMeetingDate(meetingSearchDto));
+    public ResponseEntity<List<ResponseMeetingAttendanceVo>> findMeetingAttendanceByMeetingDate(@ParameterObject RequestMeetingSearchDtoRequest requestMeetingSearchDto){
+        return ResponseEntity.ok(meetingService.findMeetingAttendanceByMeetingDate(requestMeetingSearchDto));
     }
 }

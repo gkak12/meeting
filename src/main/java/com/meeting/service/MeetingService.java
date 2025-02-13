@@ -1,16 +1,16 @@
 package com.meeting.service;
 
-import com.meeting.domain.dto.MeetingSearchDto;
-import com.meeting.domain.vo.*;
+import com.meeting.domain.dto.request.RequestMeetingSearchDtoRequest;
+import com.meeting.domain.dto.response.*;
 
 import java.util.List;
 
 public interface MeetingService {
 
-    List<MeetingVo> findAllMeetings();
-    MeetingListVo findPageMeetings(MeetingSearchDto meetingSearchDto);
-    List<MeetingVo> findMeetingsByMeetingDate(MeetingSearchDto meetingSearchDto);
-    List<MeetingContentVo> findMeetingsByContentName(String contentName);
-    MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDto meetingSearchDto);
-    List<MeetingAttendanceVo>  findMeetingAttendanceByMeetingDate(MeetingSearchDto meetingSearchDto);
+    List<ResponseMeetingVo> findAllMeetings();
+    ResponseMeetingListVo findPageMeetings(RequestMeetingSearchDtoRequest requestMeetingSearchDto);
+    List<ResponseMeetingVo> findMeetingsByMeetingDate(RequestMeetingSearchDtoRequest requestMeetingSearchDto);
+    List<ResponseMeetingContentVo> findMeetingsByContentName(String contentName);
+    ResponseMeetingMemberVo findMinMaxMembersMeeting(RequestMeetingSearchDtoRequest requestMeetingSearchDto);
+    List<ResponseMeetingAttendanceVo>  findMeetingAttendanceByMeetingDate(RequestMeetingSearchDtoRequest requestMeetingSearchDto);
 }

@@ -1,4 +1,4 @@
-package com.meeting.domain.dto;
+package com.meeting.domain.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberUpdateDto {
+public class RequestMemberUpdateDto {
 
     @NotNull
     @Min(1)

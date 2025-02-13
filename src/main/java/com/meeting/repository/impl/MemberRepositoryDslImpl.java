@@ -2,7 +2,7 @@ package com.meeting.repository.impl;
 
 import com.meeting.common.enums.YnEnums;
 import com.meeting.domain.entity.Member;
-import com.meeting.domain.vo.MemberMeetingVo;
+import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
 import com.meeting.repository.MemberRepositoryDsl;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
@@ -32,7 +32,7 @@ public class MemberRepositoryDslImpl implements MemberRepositoryDsl {
     }
 
     @Override
-    public List<MemberMeetingVo> findLatestMeeingEachMember() {
+    public List<ResponseMemberMeetingVo> findLatestMeeingEachMember() {
         BooleanBuilder builder = new BooleanBuilder();
         builder
             .and(member.isDeleted.eq(YnEnums.FALSE.getBoolVal()))
@@ -40,7 +40,7 @@ public class MemberRepositoryDslImpl implements MemberRepositoryDsl {
 
         return jpaQueryFactory
                 .select(Projections.fields(
-                    MemberMeetingVo.class,
+                    ResponseMemberMeetingVo.class,
                     member.memberSeq,
                     member.memberName,
                     meetingMember.meeting.meetingSeq.max().as("meetingSeq")

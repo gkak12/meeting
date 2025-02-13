@@ -1,11 +1,11 @@
-package com.meeting.domain.vo;
+package com.meeting.domain.dto.response;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class MeetingContentVo {
+public class ResponseMeetingContentVo {
 
     private String contentName;
     private String contentCreator;

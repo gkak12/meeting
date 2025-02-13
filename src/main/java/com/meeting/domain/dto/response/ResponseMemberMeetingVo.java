@@ -1,9 +1,9 @@
-package com.meeting.domain.vo;
+package com.meeting.domain.dto.response;
 
 import lombok.Data;
 
 @Data
-public class MemberMeetingVo {
+public class ResponseMemberMeetingVo {
 
     private Long memberSeq;
     private String memberName;

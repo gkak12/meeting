@@ -1,17 +1,17 @@
 package com.meeting.service;
 
-import com.meeting.domain.dto.MemberCreateDto;
-import com.meeting.domain.dto.MemberUpdateDto;
-import com.meeting.domain.vo.MemberMeetingVo;
-import com.meeting.domain.vo.MemberVo;
+import com.meeting.domain.dto.request.RequestMemberCreateDto;
+import com.meeting.domain.dto.request.RequestMemberUpdateDto;
+import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
+import com.meeting.domain.dto.response.ResponseMemberVo;
 
 import java.util.List;
 
 public interface MemberService {
-    List<MemberVo> findAllMembers();
-    MemberVo findByMemberName(String name);
-    List<MemberMeetingVo> findLatestMeeingEachMember();
-    void createMember(MemberCreateDto memberCreateDto);
-    void updateMember(MemberUpdateDto memberUpdateDto);
+    List<ResponseMemberVo> findAllMembers();
+    ResponseMemberVo findByMemberName(String name);
+    List<ResponseMemberMeetingVo> findLatestMeeingEachMember();
+    void createMember(RequestMemberCreateDto requestMemberCreateDto);
+    void updateMember(RequestMemberUpdateDto requestMemberUpdateDto);
     void deleteMember(Long memberSeq);
 }

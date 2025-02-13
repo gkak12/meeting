@@ -1,4 +1,4 @@
-package com.meeting.domain.dto;
+package com.meeting.domain.dto.request;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MeetingSearchDto extends PageDto {
+public class RequestMeetingSearchDtoRequest extends RequestPageDto {
 
     private Long meetingSeq;
 

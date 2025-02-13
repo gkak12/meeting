@@ -1,13 +1,13 @@
 package com.meeting.service.imp;
 
 import com.meeting.common.util.DateTimeUtil;
-import com.meeting.domain.dto.MemberCreateDto;
-import com.meeting.domain.dto.MemberUpdateDto;
+import com.meeting.domain.dto.request.RequestMemberCreateDto;
+import com.meeting.domain.dto.request.RequestMemberUpdateDto;
 import com.meeting.domain.entity.Meeting;
 import com.meeting.domain.entity.Member;
 import com.meeting.domain.mapper.MemberMapper;
-import com.meeting.domain.vo.MemberMeetingVo;
-import com.meeting.domain.vo.MemberVo;
+import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
+import com.meeting.domain.dto.response.ResponseMemberVo;
 import com.meeting.repository.MeetingRepository;
 import com.meeting.repository.MemberRepository;
 import com.meeting.service.MemberService;
@@ -29,23 +29,23 @@ public class MemberServiceImpl implements MemberService {
     private final MeetingRepository meetingRepository;
 
     @Override
-    public List<MemberVo> findAllMembers() {
+    public List<ResponseMemberVo> findAllMembers() {
         return memberRepository.findAll().stream()
                 .map(memberMapper::toVo)
                 .toList();
     }
 
     @Override
-    public MemberVo findByMemberName(String name) {
+    public ResponseMemberVo findByMemberName(String name) {
         Member member = Objects.requireNonNull(memberRepository.findByMemberName(name), "member is not found.");
         return memberMapper.toVo(member);
     }
 
     @Override
-    public List<MemberMeetingVo> findLatestMeeingEachMember() {
-        List<MemberMeetingVo> list = memberRepository.findLatestMeeingEachMember();
+    public List<ResponseMemberMeetingVo> findLatestMeeingEachMember() {
+        List<ResponseMemberMeetingVo> list = memberRepository.findLatestMeeingEachMember();
         List<Long> meetingSeqs = list.stream()
-            .map(MemberMeetingVo::getMeetingSeq)
+            .map(ResponseMemberMeetingVo::getMeetingSeq)
             .collect(Collectors.toList());
 
         Map<Long, Meeting> map = meetingRepository.findMeetingContent(meetingSeqs).stream()
@@ -68,17 +68,17 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void createMember(MemberCreateDto memberCreateDto) {
+    public void createMember(RequestMemberCreateDto requestMemberCreateDto) {
         memberRepository.save(
-                memberMapper.toCreateEntity(memberCreateDto)
+                memberMapper.toCreateEntity(requestMemberCreateDto)
         );
     }
 
     @Override
-    public void updateMember(MemberUpdateDto memberUpdateDto) {
-        Long memberSeq = memberUpdateDto.getMemberSeq();
+    public void updateMember(RequestMemberUpdateDto requestMemberUpdateDto) {
+        Long memberSeq = requestMemberUpdateDto.getMemberSeq();
         Member member = memberRepository.findById(memberSeq).orElseThrow(() -> new NullPointerException("member is not found."));
-        memberMapper.toUpdateEntity(memberUpdateDto, member);
+        memberMapper.toUpdateEntity(requestMemberUpdateDto, member);
 
         memberRepository.save(member);
     }

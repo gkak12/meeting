@@ -2,8 +2,8 @@ package com.meeting.service.imp;
 
 import com.meeting.common.enums.MeetingErrorEnums;
 import com.meeting.common.exception.MeetingException;
+import com.meeting.domain.dto.response.ResponseContentVo;
 import com.meeting.domain.mapper.ContentMapper;
-import com.meeting.domain.vo.ContentVo;
 import com.meeting.repository.ContentRepository;
 import com.meeting.service.ContentService;
 import lombok.RequiredArgsConstructor;
@@ -19,27 +19,27 @@ public class ContentServiceImpl implements ContentService {
     private final ContentRepository contentRepository;
 
     @Override
-    public List<ContentVo> findAllContents() {
+    public List<ResponseContentVo> findAllContents() {
         return contentRepository.findAll().stream()
                 .map(contentMapper::toVo)
                 .toList();
     }
 
     @Override
-    public List<ContentVo> findContentByContentName(String contentName) {
+    public List<ResponseContentVo> findContentByContentName(String contentName) {
         return contentRepository.findContentByContentName(contentName).stream()
                 .map(contentMapper::toVo)
                 .toList();
     }
 
     @Override
-    public ContentVo findMostSelectedContent() {
-        ContentVo contentVo = contentRepository.findMostSelectedContent();
+    public ResponseContentVo findMostSelectedContent() {
+        ResponseContentVo responseContentVo = contentRepository.findMostSelectedContent();
 
-        if(contentVo.getSelectionNumber() == 1L){
+        if(responseContentVo.getSelectionNumber() == 1L){
             throw new MeetingException(MeetingErrorEnums.INTERNAL_SERVER_ERROR, "작품 최다 선정 수가 1입니다.");
         }
 
-        return contentVo;
+        return responseContentVo;
     }
 }

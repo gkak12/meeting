@@ -1,9 +1,9 @@
-package com.meeting.domain.dto;
+package com.meeting.domain.dto.request;
 
 import lombok.Data;
 
 @Data
-public class PageDto {
+public class RequestPageDto {
 
     private int pageNumber;     // 현재 페이지 수
     private int pageSize;       // 현재 페이지 항목 수

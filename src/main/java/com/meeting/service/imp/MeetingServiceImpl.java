@@ -1,9 +1,9 @@
 package com.meeting.service.imp;
 
-import com.meeting.domain.dto.MeetingSearchDto;
+import com.meeting.domain.dto.request.RequestMeetingSearchDtoRequest;
+import com.meeting.domain.dto.response.*;
 import com.meeting.domain.entity.Meeting;
 import com.meeting.domain.mapper.MeetingMapper;
-import com.meeting.domain.vo.*;
 import com.meeting.repository.MeetingRepository;
 import com.meeting.service.MeetingService;
 import lombok.RequiredArgsConstructor;
@@ -20,51 +20,51 @@ public class MeetingServiceImpl implements MeetingService {
     private final MeetingRepository meetingRepository;
 
     @Override
-    public List<MeetingVo> findAllMeetings() {
+    public List<ResponseMeetingVo> findAllMeetings() {
         return meetingRepository.findAll().stream()
             .map(meetingMapper::toVo)
             .toList();
     }
 
     @Override
-    public MeetingListVo findPageMeetings(MeetingSearchDto meetingSearchDto) {
-        Page<Meeting> page = meetingRepository.findMeetingsPaging(meetingSearchDto);
+    public ResponseMeetingListVo findPageMeetings(RequestMeetingSearchDtoRequest requestMeetingSearchDto) {
+        Page<Meeting> page = meetingRepository.findMeetingsPaging(requestMeetingSearchDto);
 
-        PageVo pageVo = PageVo.builder()
+        ResponsePageVo responsePageVo = ResponsePageVo.builder()
                 .totalPages(page.getTotalPages())
                 .totalItems(page.getTotalElements())
                 .build();
 
-        List<MeetingVo> list = page.get().toList().stream()
+        List<ResponseMeetingVo> list = page.get().toList().stream()
                 .map(meetingMapper::toVo)
                 .toList();
 
-        return MeetingListVo.builder()
-                .page(pageVo)
+        return ResponseMeetingListVo.builder()
+                .page(responsePageVo)
                 .list(list)
                 .build();
     }
 
     @Override
-    public List<MeetingVo> findMeetingsByMeetingDate(MeetingSearchDto meetingSearchDto) {
-        return meetingRepository.findMeetingsByMeetingDate(meetingSearchDto).stream()
+    public List<ResponseMeetingVo> findMeetingsByMeetingDate(RequestMeetingSearchDtoRequest requestMeetingSearchDto) {
+        return meetingRepository.findMeetingsByMeetingDate(requestMeetingSearchDto).stream()
                 .map(meetingMapper::toVo)
                 .toList();
     }
 
     @Override
-    public List<MeetingContentVo> findMeetingsByContentName(String contentName) {
+    public List<ResponseMeetingContentVo> findMeetingsByContentName(String contentName) {
         return meetingRepository.findMeetingsByContentName(contentName);
     }
 
     @Override
-    public MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDto meetingSearchDto) {
-        return meetingRepository.findMinMaxMembersMeeting(meetingSearchDto);
+    public ResponseMeetingMemberVo findMinMaxMembersMeeting(RequestMeetingSearchDtoRequest requestMeetingSearchDto) {
+        return meetingRepository.findMinMaxMembersMeeting(requestMeetingSearchDto);
     }
 
     @Override
-    public List<MeetingAttendanceVo> findMeetingAttendanceByMeetingDate(MeetingSearchDto meetingSearchDto) {
-        return meetingRepository.findMeetingAttendanceByMeetingDate(meetingSearchDto).stream()
+    public List<ResponseMeetingAttendanceVo> findMeetingAttendanceByMeetingDate(RequestMeetingSearchDtoRequest requestMeetingSearchDto) {
+        return meetingRepository.findMeetingAttendanceByMeetingDate(requestMeetingSearchDto).stream()
                 .map(meetingMapper::toAttendanceVo)
                 .toList();
     }

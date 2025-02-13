@@ -2,10 +2,10 @@ package com.meeting.api;
 
 import com.meeting.common.annotation.ValidSeq;
 import com.meeting.common.annotation.ValidString;
-import com.meeting.domain.dto.MemberCreateDto;
-import com.meeting.domain.dto.MemberUpdateDto;
-import com.meeting.domain.vo.MemberMeetingVo;
-import com.meeting.domain.vo.MemberVo;
+import com.meeting.domain.dto.request.RequestMemberCreateDto;
+import com.meeting.domain.dto.request.RequestMemberUpdateDto;
+import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
+import com.meeting.domain.dto.response.ResponseMemberVo;
 import com.meeting.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,33 +24,33 @@ public class MemberController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public ResponseEntity<List<MemberVo>> findAllMembers(){
+    public ResponseEntity<List<ResponseMemberVo>> findAllMembers(){
         return ResponseEntity.ok(memberService.findAllMembers());
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/name/{name}")
-    public ResponseEntity<MemberVo> findByMemberName(@PathVariable @Valid @ValidString String name){
+    public ResponseEntity<ResponseMemberVo> findByMemberName(@PathVariable @Valid @ValidString String name){
         return ResponseEntity.ok(memberService.findByMemberName(name));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/latest-meeing-each-member")
-    public ResponseEntity<List<MemberMeetingVo>> findLatestMeeingEachMember(){
+    public ResponseEntity<List<ResponseMemberMeetingVo>> findLatestMeeingEachMember(){
         return ResponseEntity.ok(memberService.findLatestMeeingEachMember());
     }
     
     @ResponseStatus(HttpStatus.OK)
     @PostMapping
-    public ResponseEntity<Void> createMember(@RequestBody @Valid MemberCreateDto memberCreateDto){
-        memberService.createMember(memberCreateDto);
+    public ResponseEntity<Void> createMember(@RequestBody @Valid RequestMemberCreateDto requestMemberCreateDto){
+        memberService.createMember(requestMemberCreateDto);
         return ResponseEntity.ok().build();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping
-    public ResponseEntity<Void> updateMember(@RequestBody @Valid MemberUpdateDto memberUpdateDto){
-        memberService.updateMember(memberUpdateDto);
+    public ResponseEntity<Void> updateMember(@RequestBody @Valid RequestMemberUpdateDto requestMemberUpdateDto){
+        memberService.updateMember(requestMemberUpdateDto);
         return ResponseEntity.ok().build();
     }
 

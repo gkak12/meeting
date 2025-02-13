@@ -1,9 +1,9 @@
 package com.meeting.repository;
 
-import com.meeting.domain.dto.MeetingSearchDto;
+import com.meeting.domain.dto.request.RequestMeetingSearchDtoRequest;
 import com.meeting.domain.entity.Meeting;
-import com.meeting.domain.vo.MeetingContentVo;
-import com.meeting.domain.vo.MeetingMemberVo;
+import com.meeting.domain.dto.response.ResponseMeetingContentVo;
+import com.meeting.domain.dto.response.ResponseMeetingMemberVo;
 import com.querydsl.core.Tuple;
 import org.springframework.data.domain.Page;
 
@@ -11,10 +11,10 @@ import java.util.List;
 
 public interface MeetingRepositoryDsl {
 
-    Page<Meeting> findMeetingsPaging(MeetingSearchDto dto);
-    List<Meeting> findMeetingsByMeetingDate(MeetingSearchDto meetingSearchDto);
-    List<MeetingContentVo> findMeetingsByContentName(String contentName);
-    MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDto meetingSearchDto);
-    List<Tuple> findMeetingAttendanceByMeetingDate(MeetingSearchDto meetingSearchDto);
+    Page<Meeting> findMeetingsPaging(RequestMeetingSearchDtoRequest dto);
+    List<Meeting> findMeetingsByMeetingDate(RequestMeetingSearchDtoRequest requestMeetingSearchDto);
+    List<ResponseMeetingContentVo> findMeetingsByContentName(String contentName);
+    ResponseMeetingMemberVo findMinMaxMembersMeeting(RequestMeetingSearchDtoRequest requestMeetingSearchDto);
+    List<Tuple> findMeetingAttendanceByMeetingDate(RequestMeetingSearchDtoRequest requestMeetingSearchDto);
     List<Meeting> findMeetingContent(List<Long> meetingSeqs);
 }

@@ -1,7 +1,7 @@
 package com.meeting.repository.impl;
 
+import com.meeting.domain.dto.response.ResponseContentVo;
 import com.meeting.domain.entity.Content;
-import com.meeting.domain.vo.ContentVo;
 import com.meeting.repository.ContentRepositoryDsl;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -29,9 +29,9 @@ public class ContentRepositoryDslImpl implements ContentRepositoryDsl {
     }
 
     @Override
-    public ContentVo findMostSelectedContent() {
+    public ResponseContentVo findMostSelectedContent() {
         return jpaQueryFactory
-                .select(Projections.fields(ContentVo.class,
+                .select(Projections.fields(ResponseContentVo.class,
                         content.contentName,
                         content.count().as("selectionNumber")
                 ))

@@ -2,10 +2,10 @@ package com.meeting.repository.impl;
 
 import com.meeting.common.enums.YnEnums;
 import com.meeting.common.util.ConditionBuilder;
-import com.meeting.domain.dto.MeetingSearchDto;
+import com.meeting.domain.dto.request.RequestMeetingSearchDtoRequest;
 import com.meeting.domain.entity.Meeting;
-import com.meeting.domain.vo.MeetingContentVo;
-import com.meeting.domain.vo.MeetingMemberVo;
+import com.meeting.domain.dto.response.ResponseMeetingContentVo;
+import com.meeting.domain.dto.response.ResponseMeetingMemberVo;
 import com.meeting.repository.MeetingRepositoryDsl;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
@@ -36,7 +36,7 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<Meeting> findMeetingsPaging(MeetingSearchDto searchDto) {
+    public Page<Meeting> findMeetingsPaging(RequestMeetingSearchDtoRequest searchDto) {
         Pageable pageable = PageRequest.of(
                 searchDto.getPageNumber(),
                 searchDto.getPageSize()
@@ -68,7 +68,7 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
     }
 
     @Override
-    public List<Meeting> findMeetingsByMeetingDate(MeetingSearchDto searchDto) {
+    public List<Meeting> findMeetingsByMeetingDate(RequestMeetingSearchDtoRequest searchDto) {
         return jpaQueryFactory
                 .selectFrom(meeting)
                 .where(
@@ -82,10 +82,10 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
     }
 
     @Override
-    public List<MeetingContentVo> findMeetingsByContentName(String contentName) {
+    public List<ResponseMeetingContentVo> findMeetingsByContentName(String contentName) {
         return jpaQueryFactory
                 .select(Projections.fields(
-                        MeetingContentVo.class,
+                        ResponseMeetingContentVo.class,
                         content.contentName,
                         content.contentCreator,
                         content.contentRecommender,
@@ -100,23 +100,23 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
     }
 
     @Override
-    public MeetingMemberVo findMinMaxMembersMeeting(MeetingSearchDto meetingSearchDto) {
+    public ResponseMeetingMemberVo findMinMaxMembersMeeting(RequestMeetingSearchDtoRequest requestMeetingSearchDto) {
         BooleanBuilder builder = new BooleanBuilder();
         builder
             .and(
                 ConditionBuilder.buildDateBetween(
                     meeting.meetingDateTime,
-                    meetingSearchDto.getStartDate(),
-                    meetingSearchDto.getEndDate()
+                    requestMeetingSearchDto.getStartDate(),
+                    requestMeetingSearchDto.getEndDate()
                 )
             )
             .and(
                     meetingMember.isAttendance.eq(true)
             );
 
-        JPAQuery<MeetingMemberVo> jpaQuery = jpaQueryFactory
+        JPAQuery<ResponseMeetingMemberVo> jpaQuery = jpaQueryFactory
                 .select(Projections.fields(
-                        MeetingMemberVo.class,
+                        ResponseMeetingMemberVo.class,
                         meeting.meetingSeq,
                         content.contentName,
                         meeting.meetingDateTime,
@@ -132,7 +132,7 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
                 .where(builder)
                 .groupBy(meeting.meetingSeq);
 
-        if(YnEnums.TRUE.getYnVal().equals(meetingSearchDto.getMinMaxFlag())){
+        if(YnEnums.TRUE.getYnVal().equals(requestMeetingSearchDto.getMinMaxFlag())){
             jpaQuery
                     .orderBy(meetingMember.member.memberSeq.count().desc());
         } else{
@@ -140,20 +140,20 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
                     .orderBy(meetingMember.member.memberSeq.count().asc());
         }
 
-        MeetingMemberVo meetingMemberVo = jpaQuery.fetchFirst();
+        ResponseMeetingMemberVo responseMeetingMemberVo = jpaQuery.fetchFirst();
 
         builder = new BooleanBuilder();
         builder
             .and(
-                meetingMember.meeting.meetingSeq.eq(meetingMemberVo.getMeetingSeq())
+                meetingMember.meeting.meetingSeq.eq(responseMeetingMemberVo.getMeetingSeq())
             )
             .and(
                 meetingMember.isAttendance.eq(true)
             );
 
-        List<MeetingMemberVo.Member> members = jpaQueryFactory
+        List<ResponseMeetingMemberVo.Member> members = jpaQueryFactory
                 .select(Projections.fields(
-                        MeetingMemberVo.Member.class,
+                        ResponseMeetingMemberVo.Member.class,
                         member.memberName
                 ))
                 .from(meetingMember)
@@ -161,20 +161,20 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
                 .on(meetingMember.member.memberSeq.eq(member.memberSeq))
                 .where(builder)
                 .fetch();
-        meetingMemberVo.setMembers(members);
+        responseMeetingMemberVo.setMembers(members);
 
-        return meetingMemberVo;
+        return responseMeetingMemberVo;
     }
 
     @Override
-    public List<Tuple> findMeetingAttendanceByMeetingDate(MeetingSearchDto meetingSearchDto) {
+    public List<Tuple> findMeetingAttendanceByMeetingDate(RequestMeetingSearchDtoRequest requestMeetingSearchDto) {
         BooleanBuilder builder = new BooleanBuilder();
         builder
             .and(
                 ConditionBuilder.buildDateBetween(
                         meeting.meetingDateTime,
-                        meetingSearchDto.getStartDate(),
-                        meetingSearchDto.getEndDate()
+                        requestMeetingSearchDto.getStartDate(),
+                        requestMeetingSearchDto.getEndDate()
                 )
             )
             .and(

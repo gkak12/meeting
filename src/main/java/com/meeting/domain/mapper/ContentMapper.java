@@ -1,8 +1,8 @@
 package com.meeting.domain.mapper;
 
-import com.meeting.domain.dto.ContentDto;
+import com.meeting.domain.dto.request.RequestContentDto;
 import com.meeting.domain.entity.Content;
-import com.meeting.domain.vo.ContentVo;
+import com.meeting.domain.dto.response.ResponseContentVo;
 import org.mapstruct.*;
 
 @Mapper(
@@ -14,6 +14,6 @@ import org.mapstruct.*;
 )
 public interface ContentMapper {
 
-    ContentVo toVo(Content content);
-    Content toEntity(ContentDto contentDto);
+    ResponseContentVo toVo(Content content);
+    Content toEntity(RequestContentDto requestContentDto);
 }

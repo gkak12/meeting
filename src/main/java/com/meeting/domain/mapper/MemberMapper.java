@@ -1,9 +1,9 @@
 package com.meeting.domain.mapper;
 
-import com.meeting.domain.dto.MemberCreateDto;
-import com.meeting.domain.dto.MemberUpdateDto;
+import com.meeting.domain.dto.request.RequestMemberCreateDto;
+import com.meeting.domain.dto.request.RequestMemberUpdateDto;
 import com.meeting.domain.entity.Member;
-import com.meeting.domain.vo.MemberVo;
+import com.meeting.domain.dto.response.ResponseMemberVo;
 import org.mapstruct.*;
 
 @Mapper(
@@ -15,7 +15,7 @@ import org.mapstruct.*;
 )
 public interface MemberMapper {
 
-    MemberVo toVo(Member member);
-    Member toCreateEntity(MemberCreateDto memberCreateDto);
-    void toUpdateEntity(MemberUpdateDto memberUpdateDto, @MappingTarget Member member);
+    ResponseMemberVo toVo(Member member);
+    Member toCreateEntity(RequestMemberCreateDto requestMemberCreateDto);
+    void toUpdateEntity(RequestMemberUpdateDto requestMemberUpdateDto, @MappingTarget Member member);
 }

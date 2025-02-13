@@ -1,9 +1,9 @@
 package com.meeting.domain.mapper;
 
-import com.meeting.domain.dto.MeetingDto;
+import com.meeting.domain.dto.request.RequestMeetingDto;
 import com.meeting.domain.entity.Meeting;
-import com.meeting.domain.vo.MeetingAttendanceVo;
-import com.meeting.domain.vo.MeetingVo;
+import com.meeting.domain.dto.response.ResponseMeetingAttendanceVo;
+import com.meeting.domain.dto.response.ResponseMeetingVo;
 import com.querydsl.core.Tuple;
 import org.mapstruct.*;
 
@@ -20,12 +20,12 @@ import java.util.Objects;
 )
 public interface MeetingMapper {
 
-    Meeting toEntity(MeetingDto meetingDto);
-    MeetingVo toVo(Meeting meeting);
+    Meeting toEntity(RequestMeetingDto requestMeetingDto);
+    ResponseMeetingVo toVo(Meeting meeting);
 
     @Mapping(target = "meetingDate", expression = "java(localDateTimeToString(meetingTuple.get(0, java.time.LocalDateTime.class)))")
     @Mapping(target = "meetingAttendanceNum", expression = "java(meetingTuple.get(1, Long.class))")
-    MeetingAttendanceVo toAttendanceVo(Tuple meetingTuple);
+    ResponseMeetingAttendanceVo toAttendanceVo(Tuple meetingTuple);
 
     /**
      *  LocalDateTime을 "yyyy-MM-dd" 형식 문자열로 변환하는 메서드

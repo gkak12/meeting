@@ -1,4 +1,4 @@
-package com.meeting.domain.dto;
+package com.meeting.domain.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberCreateDto {
+public class RequestMemberCreateDto {
 
     @NotBlank
     private String memberName;
