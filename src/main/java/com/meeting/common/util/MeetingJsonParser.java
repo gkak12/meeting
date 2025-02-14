@@ -26,6 +26,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -52,6 +54,8 @@ public class MeetingJsonParser {
             return;
         }
 
+        Map<LocalDateTime, Meeting> meetingMap = findAllMeetingMap();
+
         Arrays.stream(files)
             .sorted((file1, file2) -> { // json 파일명 숫자 기준 오름차순 정렬
                 String name1 = file1.getName().replaceAll("\\D", "");
@@ -60,12 +64,26 @@ public class MeetingJsonParser {
                 return Integer.compare(Integer.parseInt(name1), Integer.parseInt(name2));
             })
             .forEach(file -> {  // JSON 파일 파싱
-                parseJsonFile(file);
+                parseJsonFile(file, meetingMap);
             });
     }
 
-    private void parseJsonFile(File file){
+    private Map<LocalDateTime, Meeting> findAllMeetingMap(){
+        return meetingRepository.findAll().stream()
+            .collect(Collectors.toMap(
+                Meeting::getMeetingDateTime,
+                meeting -> meeting,
+                (existing, replacement) -> existing
+            ));
+    }
+
+    private void parseJsonFile(File file, Map<LocalDateTime, Meeting> meetingMap){
         try {
+            // meetingMap null 및 empty 체크
+            if(Objects.isNull(meetingMap) || meetingMap.isEmpty()){
+                meetingMap = findAllMeetingMap();
+            }
+
             log.info("filePath: {}", file.getPath());
             InputStream inputStream = new FileInputStream(file);
 
@@ -79,8 +97,14 @@ public class MeetingJsonParser {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dateStr = rootNode.get("date").asText();
             LocalDateTime localDateTime = LocalDateTime.parse(dateStr, formatter)
-                    .atZone(ZoneId.of("Asia/Seoul"))
-                    .toLocalDateTime();
+                .atZone(ZoneId.of("Asia/Seoul"))
+                .toLocalDateTime();
+            
+            // 날짜 기준으로 데이터 중복 체크(누적 방지)
+            if(meetingMap.containsKey(localDateTime)){
+                log.info("this meeting data already exists.");
+                return;
+            }
 
             // Meeting entity 생성
             Meeting meeting = new Meeting();
@@ -109,27 +133,27 @@ public class MeetingJsonParser {
             nonAttendants.forEach(item -> memberMap.put(item.asText(), YnEnums.FALSE.getBoolVal()));
 
             memberMap.keySet()
-                    .forEach(item -> {
-                        // Member entity 조회
-                        Member member = memberRepository.findByMemberName(item);
+                .forEach(item -> {
+                    // Member entity 조회
+                    Member member = memberRepository.findByMemberName(item);
 
-                        // Member entity 생성
-                        if(member == null){
-                            Member newMember = new Member();
-                            newMember.setMemberName(item);
-                            newMember.setIsDeleted(false);
-                            memberRepository.save(newMember);
+                    // Member entity 생성
+                    if(member == null){
+                        Member newMember = new Member();
+                        newMember.setMemberName(item);
+                        newMember.setIsDeleted(false);
+                        memberRepository.save(newMember);
 
-                            member = newMember;
-                        }
+                        member = newMember;
+                    }
 
-                        // MeetingMember entity 생성
-                        MeetingMember meetingMember = new MeetingMember();
-                        meetingMember.setIsAttendance(memberMap.get(item));
-                        meetingMember.setMeeting(meeting);
-                        meetingMember.setMember(member);
-                        meetingMemberRepository.save(meetingMember);
-                    });
+                    // MeetingMember entity 생성
+                    MeetingMember meetingMember = new MeetingMember();
+                    meetingMember.setIsAttendance(memberMap.get(item));
+                    meetingMember.setMeeting(meeting);
+                    meetingMember.setMember(member);
+                    meetingMemberRepository.save(meetingMember);
+                });
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
