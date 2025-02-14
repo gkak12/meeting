@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "MEMBER")
+@Table(name = "MEMBER", schema = "MEETING")
 @NoArgsConstructor
 public class Member {
 
