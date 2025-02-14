@@ -66,4 +66,4 @@ logging:
     org.hibernate.orm.jdbc.bind: TRACE
 
 json:
-  location: "F:/json"
+  location: "/home/data/json"
