@@ -53,21 +53,21 @@ public class MeetingJsonParser {
         }
 
         Arrays.stream(files)
-                .sorted((file1, file2) -> { // json 파일명 숫자 기준 오름차순 정렬
-                    String name1 = file1.getName().replaceAll("\\D", "");
-                    String name2 = file2.getName().replaceAll("\\D", "");
+            .sorted((file1, file2) -> { // json 파일명 숫자 기준 오름차순 정렬
+                String name1 = file1.getName().replaceAll("\\D", "");
+                String name2 = file2.getName().replaceAll("\\D", "");
 
-                    return Integer.compare(Integer.parseInt(name1), Integer.parseInt(name2));
-                })
-                .forEach(file -> {  // JSON 파일 파싱
-                    parseJsonFile(file.getPath());
-                });
+                return Integer.compare(Integer.parseInt(name1), Integer.parseInt(name2));
+            })
+            .forEach(file -> {  // JSON 파일 파싱
+                parseJsonFile(file);
+            });
     }
 
-    private void parseJsonFile(String filePath){
+    private void parseJsonFile(File file){
         try {
-            log.info("filePath: {}", filePath);
-            InputStream inputStream = new FileInputStream(filePath);
+            log.info("filePath: {}", file.getPath());
+            InputStream inputStream = new FileInputStream(file);
 
             // JSON 데이터를 JsonNode로 변환
             JsonNode rootNode = objectMapper.readTree(inputStream);
