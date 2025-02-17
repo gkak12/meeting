@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MeetingJsonParser {
 
     private final ObjectMapper objectMapper;
@@ -45,6 +47,7 @@ public class MeetingJsonParser {
     private String jsonLocation;
 
     @PostConstruct
+    @Transactional
     public void readJsonFiles(){
         File dir = new File(jsonLocation);
         File[] files = dir.listFiles();
