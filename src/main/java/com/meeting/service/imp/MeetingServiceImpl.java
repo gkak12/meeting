@@ -9,17 +9,20 @@ import com.meeting.service.MeetingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingMapper meetingMapper;
     private final MeetingRepository meetingRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseMeetingVo> findAllMeetings() {
         return meetingRepository.findAll().stream()
             .map(meetingMapper::toVo)
@@ -27,6 +30,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseMeetingListVo findPageMeetings(RequestMeetingSearchDtoRequest requestMeetingSearchDto) {
         Page<Meeting> page = meetingRepository.findMeetingsPaging(requestMeetingSearchDto);
 
@@ -46,6 +50,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseMeetingVo> findMeetingsByMeetingDate(RequestMeetingSearchDtoRequest requestMeetingSearchDto) {
         return meetingRepository.findMeetingsByMeetingDate(requestMeetingSearchDto).stream()
                 .map(meetingMapper::toVo)
@@ -53,16 +58,19 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseMeetingContentVo> findMeetingsByContentName(String contentName) {
         return meetingRepository.findMeetingsByContentName(contentName);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseMeetingMemberVo findMinMaxMembersMeeting(RequestMeetingSearchDtoRequest requestMeetingSearchDto) {
         return meetingRepository.findMinMaxMembersMeeting(requestMeetingSearchDto);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseMeetingAttendanceVo> findMeetingAttendanceByMeetingDate(RequestMeetingSearchDtoRequest requestMeetingSearchDto) {
         return meetingRepository.findMeetingAttendanceByMeetingDate(requestMeetingSearchDto).stream()
                 .map(meetingMapper::toAttendanceVo)

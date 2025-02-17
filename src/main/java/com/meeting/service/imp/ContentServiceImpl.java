@@ -8,17 +8,20 @@ import com.meeting.repository.ContentRepository;
 import com.meeting.service.ContentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ContentServiceImpl implements ContentService {
 
     private final ContentMapper contentMapper;
     private final ContentRepository contentRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseContentVo> findAllContents() {
         return contentRepository.findAll().stream()
                 .map(contentMapper::toVo)
@@ -26,6 +29,7 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseContentVo> findContentByContentName(String contentName) {
         return contentRepository.findContentByContentName(contentName).stream()
                 .map(contentMapper::toVo)
@@ -33,6 +37,7 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseContentVo findMostSelectedContent() {
         ResponseContentVo responseContentVo = contentRepository.findMostSelectedContent();
 

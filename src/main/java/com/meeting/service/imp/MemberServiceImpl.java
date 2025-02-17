@@ -13,6 +13,7 @@ import com.meeting.repository.MemberRepository;
 import com.meeting.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
@@ -29,6 +31,7 @@ public class MemberServiceImpl implements MemberService {
     private final MeetingRepository meetingRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseMemberVo> findAllMembers() {
         return memberRepository.findAll().stream()
                 .map(memberMapper::toVo)
@@ -36,12 +39,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseMemberVo findByMemberName(String name) {
         Member member = Objects.requireNonNull(memberRepository.findByMemberName(name), "member is not found.");
         return memberMapper.toVo(member);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseMemberMeetingVo> findLatestMeeingEachMember() {
         List<ResponseMemberMeetingVo> list = memberRepository.findLatestMeeingEachMember();
         List<Long> meetingSeqs = list.stream()
@@ -68,6 +73,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void createMember(RequestMemberCreateDto requestMemberCreateDto) {
         memberRepository.save(
                 memberMapper.toCreateEntity(requestMemberCreateDto)
@@ -75,6 +81,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void updateMember(RequestMemberUpdateDto requestMemberUpdateDto) {
         Long memberSeq = requestMemberUpdateDto.getMemberSeq();
         Member member = memberRepository.findById(memberSeq).orElseThrow(() -> new NullPointerException("member is not found."));
@@ -84,6 +91,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void deleteMember(Long memberSeq) {
         Member member = memberRepository.findById(memberSeq).orElseThrow(() -> new NullPointerException("member is not found."));
         member.setIsDeleted(true);
