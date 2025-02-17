@@ -71,7 +71,8 @@ public class MeetingJsonParser {
             });
     }
 
-    private Map<LocalDateTime, Meeting> findAllMeetingMap(){
+    @Transactional(readOnly = true)
+    public Map<LocalDateTime, Meeting> findAllMeetingMap(){
         return meetingRepository.findAll().stream()
             .collect(Collectors.toMap(
                 Meeting::getMeetingDateTime,
@@ -80,7 +81,7 @@ public class MeetingJsonParser {
             ));
     }
 
-    private void parseJsonFile(File file, Map<LocalDateTime, Meeting> meetingMap){
+    public void parseJsonFile(File file, Map<LocalDateTime, Meeting> meetingMap){
         try {
             // meetingMap null 및 empty 체크
             if(Objects.isNull(meetingMap) || meetingMap.isEmpty()){
