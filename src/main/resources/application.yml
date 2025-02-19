@@ -27,6 +27,10 @@ spring:
   sql:
     init:
       mode: always        # schema.sql, data.sql 실행
+  servlet:
+    multipart:
+      max-file-size: 10MB     # 첨부파일 하나 최대 사이즈
+      max-request-size: 10MB  # 첨부파일 전체 최대 사이즈
 
 logging:
   level:
@@ -58,6 +62,10 @@ spring:
   sql:
     init:
       mode: never         # schema.sql, data.sql 실행
+  servlet:
+    multipart:
+      max-file-size: 10MB     # 첨부파일 하나 최대 사이즈
+      max-request-size: 10MB  # 첨부파일 전체 최대 사이즈
 
 logging:
   level:
