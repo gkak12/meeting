@@ -5,6 +5,7 @@ import com.meeting.domain.entity.Meeting;
 import com.meeting.service.MeetingJsonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,15 +30,15 @@ public class MeetingJsonServiceImpl implements MeetingJsonService {
 
     @Override
     @Transactional
-    public void createMeetingJson(MultipartFile multipartFile) throws IOException {
+    public void  createMeetingJson(MultipartFile multipartFile) throws IOException {
         Objects.requireNonNull(Objects.requireNonNull(multipartFile), "multipartFile is null.");
 
         if(multipartFile.isEmpty()){
             throw new IllegalArgumentException("multipartFile is empty.");
         }
 
-        String extName = Objects.requireNonNull(multipartFile.getOriginalFilename(), "multipartFile name is null.")
-                .substring(multipartFile.getOriginalFilename().lastIndexOf("."));
+        Objects.requireNonNull(multipartFile.getOriginalFilename(), "multipartFile name is null.");
+        String extName = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
 
         if(!extName.equals("json")){
             throw new IllegalArgumentException("multipartFile is not json file.");
