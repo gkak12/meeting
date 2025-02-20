@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ENC(w8JYlfb55/e2xRgnXr1I80CiyxyYPRdteF6lVTQH1Jo9yrcr5LzhqQ==)
+    url: ENC(Ni3F09wR/iWNU9PgEpwney5cgttkdfBaP28Busgz4ew=)
     driver-class-name: org.h2.Driver
-    username: ENC(uzYY3fWzGX4VSvJcNa7eEw==)
+    username: ENC(yDJEeKSG9bq9ekHK1G32JQ==)
     password:
   jpa:
     hibernate:
