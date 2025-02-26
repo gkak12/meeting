@@ -1,5 +1,7 @@
 package com.meeting.service.imp;
 
+import com.meeting.common.enums.MeetingErrorEnums;
+import com.meeting.common.exception.MeetingException;
 import com.meeting.common.util.DateTimeUtil;
 import com.meeting.domain.dto.request.RequestMemberCreateDto;
 import com.meeting.domain.dto.request.RequestMemberUpdateDto;
@@ -40,7 +42,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ResponseMemberVo findByMemberSeq(Long seq) {
-        Member member = memberRepository.findById(seq).orElseThrow(() -> new NullPointerException());
+        Member member = memberRepository.findById(seq).orElseThrow(() -> new MeetingException(MeetingErrorEnums.NOT_FOUND, "member is not found."));
         return memberMapper.toVo(member);
     }
 

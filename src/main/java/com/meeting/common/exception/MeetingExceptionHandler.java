@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class MeetingExceptionHandler {
 
+    @ExceptionHandler(MeetingException.class)
+    public ResponseEntity<String> handleMeetingException(final MeetingException e) {
+        return ResponseEntity.status(500).body(e.getMessage());
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(final IllegalArgumentException e) {
         return ResponseEntity.status(500).body(e.getMessage());
