@@ -14,17 +14,13 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class MeetingExceptionHandler {
 
-    @ExceptionHandler(HandlerMethodValidationException.class)
-    public ResponseEntity<String> handleHandlerMethodValidationException(final HandlerMethodValidationException e) {
-        String msg = e.getAllValidationResults().stream()
-                .map(ParameterValidationResult::toString)
-                .collect(Collectors.joining("\n"));
-
-        return ResponseEntity.status(400).body(msg);
-    }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(final IllegalArgumentException e) {
+        return ResponseEntity.status(500).body(e.getMessage());
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<String> handleIOException(final IOException e) {
         return ResponseEntity.status(500).body(e.getMessage());
     }
 
@@ -33,9 +29,13 @@ public class MeetingExceptionHandler {
         return ResponseEntity.status(500).body(e.getMessage());
     }
 
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<String> handleIOException(final IOException e) {
-        return ResponseEntity.status(500).body(e.getMessage());
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<String> handleHandlerMethodValidationException(final HandlerMethodValidationException e) {
+        String msg = e.getAllValidationResults().stream()
+                .map(ParameterValidationResult::toString)
+                .collect(Collectors.joining("\n"));
+
+        return ResponseEntity.status(400).body(msg);
     }
 
     @ExceptionHandler(Exception.class)
