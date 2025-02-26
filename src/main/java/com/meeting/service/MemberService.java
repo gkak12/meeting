@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface MemberService {
     List<ResponseMemberVo> findAllMembers();
+    ResponseMemberVo findByMemberSeq(Long seq);
     ResponseMemberVo findByMemberName(String name);
     List<ResponseMemberMeetingVo> findLatestMeeingEachMember();
     void createMember(RequestMemberCreateDto requestMemberCreateDto);

@@ -39,6 +39,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public ResponseMemberVo findByMemberSeq(Long seq) {
+        Member member = memberRepository.findById(seq).orElseThrow(() -> new NullPointerException());
+        return memberMapper.toVo(member);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public ResponseMemberVo findByMemberName(String name) {
         Member member = Objects.requireNonNull(memberRepository.findByMemberName(name), "member is not found.");

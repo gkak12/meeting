@@ -29,6 +29,12 @@ public class MemberController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/seq/{seq}")
+    public ResponseEntity<ResponseMemberVo> findByMemberSeq(@PathVariable @Valid @ValidSeq Long seq){
+        return ResponseEntity.ok(memberService.findByMemberSeq(seq));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/name/{name}")
     public ResponseEntity<ResponseMemberVo> findByMemberName(@PathVariable @Valid @ValidString String name){
         return ResponseEntity.ok(memberService.findByMemberName(name));
