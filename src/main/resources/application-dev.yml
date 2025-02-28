@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: ENC(Nj4dh6gAPszIPYFaVoeIpFNJ9L+ECKFTXUM7P1LHuSyhcWAvNBgEG0Tci3R7R9ckB6TwjhWJubI=)
+    url: ENC(dsadqJoxtVwMf+QKBKHf3j2bPTBbDZ0QfHp8F6iRKilQ81gtzsBIqbjnf2/sHWQcfkP/BxnvlpI=)
     driver-class-name: org.postgresql.Driver
-    username: ENC(X46EQQ54W2YdCqvNkCTtGQlTypvtSfRO)
-    password: ENC(JITZQMy9cPlyWnOxX8N11KkvP+wRrtb+)
+    username: ENC(LWJs2AgSdy6pNy8mbrdzp2E77F9RAb3M)
+    password: ENC(I+a5CrSrcAbw2eN3G0y4zdYyy0BxSeXh)
   jpa:
     hibernate:
       ddl-auto: update    # 테이블 자동 생성 및 업데이트
