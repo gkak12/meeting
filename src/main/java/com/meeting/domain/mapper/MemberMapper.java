@@ -15,7 +15,9 @@ import org.mapstruct.*;
 )
 public interface MemberMapper {
 
+    @Mapping(target = "meetingAttendancesNumber", ignore = true)
     ResponseMemberVo toVo(Member member);
+
     Member toCreateEntity(RequestMemberCreateDto requestMemberCreateDto);
     void toUpdateEntity(RequestMemberUpdateDto requestMemberUpdateDto, @MappingTarget Member member);
 }

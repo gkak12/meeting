@@ -6,4 +6,5 @@ import lombok.Data;
 public class ResponseMemberVo {
 
     private String memberName;
+    private Long meetingAttendancesNumber;
 }

@@ -24,7 +24,7 @@ public interface MeetingMapper {
     ResponseMeetingVo toVo(Meeting meeting);
 
     @Mapping(target = "meetingDate", expression = "java(localDateTimeToString(meetingTuple.get(0, java.time.LocalDateTime.class)))")
-    @Mapping(target = "meetingAttendeeNumber", expression = "java(meetingTuple.get(1, Long.class))")
+    @Mapping(target = "meetingAttendeesNumber", expression = "java(meetingTuple.get(1, Long.class))")
     ResponseMeetingAttendanceVo toAttendanceVo(Tuple meetingTuple);
 
     /**

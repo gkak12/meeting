@@ -15,4 +15,5 @@ public interface MemberService {
     void createMember(RequestMemberCreateDto requestMemberCreateDto);
     void updateMember(RequestMemberUpdateDto requestMemberUpdateDto);
     void deleteMember(Long memberSeq);
+    List<ResponseMemberVo> findTop10AttendanceMemberByQuarter(String yearQuarter);
 }

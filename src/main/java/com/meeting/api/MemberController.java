@@ -2,6 +2,7 @@ package com.meeting.api;
 
 import com.meeting.common.annotation.ValidSeq;
 import com.meeting.common.annotation.ValidString;
+import com.meeting.common.annotation.ValidYearQuarter;
 import com.meeting.domain.dto.request.RequestMemberCreateDto;
 import com.meeting.domain.dto.request.RequestMemberUpdateDto;
 import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
@@ -65,5 +66,11 @@ public class MemberController {
     public ResponseEntity<Void> deleteMember(@PathVariable @Valid @ValidSeq Long memberSeq){
         memberService.deleteMember(memberSeq);
         return ResponseEntity.ok().build();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/year-quarter/{yearQuarter}")
+    public ResponseEntity<List<ResponseMemberVo>> findTop10AttendanceMemberByQuarter(@PathVariable @Valid @ValidYearQuarter String yearQuarter){
+        return ResponseEntity.ok(memberService.findTop10AttendanceMemberByQuarter(yearQuarter));
     }
 }

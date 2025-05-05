@@ -1,8 +1,8 @@
 package com.meeting.repository.impl;
 
 import com.meeting.common.enums.YnEnums;
-import com.meeting.domain.entity.Member;
 import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
+import com.meeting.domain.entity.Member;
 import com.meeting.repository.MemberRepositoryDsl;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;

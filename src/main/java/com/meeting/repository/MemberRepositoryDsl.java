@@ -1,7 +1,7 @@
 package com.meeting.repository;
 
-import com.meeting.domain.entity.Member;
 import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
+import com.meeting.domain.entity.Member;
 
 import java.util.List;
 

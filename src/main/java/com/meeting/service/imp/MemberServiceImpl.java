@@ -10,6 +10,7 @@ import com.meeting.domain.entity.Member;
 import com.meeting.domain.mapper.MemberMapper;
 import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
 import com.meeting.domain.dto.response.ResponseMemberVo;
+import com.meeting.repository.MeetingMemberRepository;
 import com.meeting.repository.MeetingRepository;
 import com.meeting.repository.MemberRepository;
 import com.meeting.service.MemberService;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,6 +33,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MeetingRepository meetingRepository;
+    private final MeetingMemberRepository meetingMemberRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -41,6 +44,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseMemberVo findByMemberSeq(Long seq) {
         Member member = memberRepository.findById(seq).orElseThrow(() -> new MeetingException(MeetingErrorEnums.NOT_FOUND, "member is not found."));
         return memberMapper.toVo(member);
@@ -105,5 +109,35 @@ public class MemberServiceImpl implements MemberService {
         member.setIsDeleted(true);
 
         memberRepository.save(member);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ResponseMemberVo> findTop10AttendanceMemberByQuarter(String yearQuarter) {
+        String[] part = yearQuarter.split("-");
+
+        LocalDateTime startDateTime;
+        LocalDateTime endDateTime;
+
+        switch (part[1]) {
+            case "1Q" -> {
+                startDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 1, 1, 0, 0, 0);
+                endDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 3, 31, 23, 59, 59);
+            }
+            case "2Q" -> {
+                startDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 4, 1, 0, 0, 0);
+                endDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 6, 30, 23, 59, 59);
+            }
+            case "3Q" -> {
+                startDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 7, 1, 0, 0, 0);
+                endDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 9, 30, 23, 59, 59);
+            }
+            default -> {
+                startDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 10, 1, 0, 0, 0);
+                endDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 12, 31, 23, 59, 59);
+            }
+        }
+
+        return meetingMemberRepository.findTop10AttendanceMemberByQuarter(startDateTime, endDateTime);
     }
 }
