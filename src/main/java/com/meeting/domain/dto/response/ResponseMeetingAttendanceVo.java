@@ -6,5 +6,5 @@ import lombok.Data;
 public class ResponseMeetingAttendanceVo {
 
     private String meetingDate;
-    private Long meetingAttendanceNum;
+    private Long meetingAttendeeNumber;
 }
