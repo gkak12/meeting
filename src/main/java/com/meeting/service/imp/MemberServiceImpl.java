@@ -35,6 +35,8 @@ public class MemberServiceImpl implements MemberService {
     private final MeetingRepository meetingRepository;
     private final MeetingMemberRepository meetingMemberRepository;
 
+    private final DateTimeUtil dateTimeUtil;
+
     @Override
     @Transactional(readOnly = true)
     public List<ResponseMemberVo> findAllMembers() {
@@ -76,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
             .forEach(item -> {
                 Long meetingSeq = item.getMeetingSeq();
                 Meeting meeting = map.get(meetingSeq);
-                item.setMeetingDateTime(DateTimeUtil.convertLocalDateTimeToString("yyyy-MM-dd HH:mm:ss", meeting.getMeetingDateTime()));
+                item.setMeetingDateTime(dateTimeUtil.convertLocalDateTimeToString("yyyy-MM-dd HH:mm:ss", meeting.getMeetingDateTime()));
                 item.setMeetingPlace(meeting.getMeetingPlace());
                 item.setContentName(meeting.getContent().getContentName());
             });
@@ -118,8 +120,8 @@ public class MemberServiceImpl implements MemberService {
         int year = Integer.parseInt(part[0]);
         int quarter = Integer.parseInt(part[1].replace("Q", ""));
 
-        LocalDateTime startDateTime = DateTimeUtil.getQuarterStartDateTime(year, quarter);
-        LocalDateTime endDateTime = DateTimeUtil.getQuarterEndDateTime(year, quarter);
+        LocalDateTime startDateTime = dateTimeUtil.getQuarterStartDateTime(year, quarter);
+        LocalDateTime endDateTime = dateTimeUtil.getQuarterEndDateTime(year, quarter);
 
         return meetingMemberRepository.findTop10AttendanceMemberByQuarter(startDateTime, endDateTime);
     }
