@@ -46,14 +46,14 @@ public class DateTimeUtil {
     }
 
     public LocalDateTime getQuarterStartDateTime(int year, int quarter){
-        int startMonth = (quarter - 1) * 3 + 1;
+        int startMonth = (quarter-1)*3+1;
         LocalDateTime startDateTime = LocalDateTime.of(year, startMonth, 1, 0, 0, 0);
 
         return startDateTime;
     }
 
     public LocalDateTime getQuarterEndDateTime(int year, int quarter){
-        int endMonth = quarter * 3;
+        int endMonth = quarter*3;
         YearMonth yearMonth = YearMonth.of(year, endMonth);
         LocalDate endDate = yearMonth.atEndOfMonth();
         LocalDateTime endDateTime = LocalDateTime.of(endDate, java.time.LocalTime.of(23, 59, 59));
