@@ -48,7 +48,7 @@ public class MeetingJsonParser {
 
     @PostConstruct
     @Transactional
-    public void readJsonFiles(){
+    public void readJsonFiles(){    // JSON 파일이 있는 디렉토리 읽어서 DB 저장
         File dir = new File(jsonLocation);
         File[] files = dir.listFiles();
 
@@ -60,7 +60,7 @@ public class MeetingJsonParser {
         Map<LocalDateTime, Meeting> meetingMap = findAllMeetingMap();
 
         Arrays.stream(files)
-            .sorted((file1, file2) -> { // json 파일명 숫자 기준 오름차순 정렬
+            .sorted((file1, file2) -> { // JSON 파일명 숫자 기준 오름차순 정렬
                 String name1 = file1.getName().replaceAll("\\D", "");
                 String name2 = file2.getName().replaceAll("\\D", "");
 
@@ -72,25 +72,24 @@ public class MeetingJsonParser {
     }
 
     @Transactional(readOnly = true)
-    public Map<LocalDateTime, Meeting> findAllMeetingMap(){
-        return meetingRepository.findAll().stream()
-            .collect(Collectors.toMap(
-                Meeting::getMeetingDateTime,
-                meeting -> meeting,
-                (existing, replacement) -> existing
+    public Map<LocalDateTime, Meeting> findAllMeetingMap(){ // meeting 전체 데이터 조회해서 Map에 저장
+        return meetingRepository.findAll().stream()     // meeting 전체 데이터 조회
+            .collect(Collectors.toMap(  // Map으로 저장
+                Meeting::getMeetingDateTime,    // key
+                meeting -> meeting,             // value
+                (existing, replacement) -> existing     // 동일한 데이터 존재하는 경우 기존 데이터 유지
             ));
     }
 
     public void parseJsonFile(File file, Map<LocalDateTime, Meeting> meetingMap){
-        try {
-            // meetingMap null 및 empty 체크
-            if(Objects.isNull(meetingMap) || meetingMap.isEmpty()){
-                meetingMap = findAllMeetingMap();
-            }
+        // meetingMap null 및 empty 체크
+        if(Objects.isNull(meetingMap) || meetingMap.isEmpty()){
+            meetingMap = findAllMeetingMap();
+        }
 
-            log.info("filePath: {}", file.getPath());
-            InputStream inputStream = new FileInputStream(file);
+        log.info("filePath: {}", file.getPath());
 
+        try (InputStream inputStream = new FileInputStream(file)) {
             // JSON 데이터를 JsonNode로 변환
             JsonNode rootNode = objectMapper.readTree(inputStream);
 
