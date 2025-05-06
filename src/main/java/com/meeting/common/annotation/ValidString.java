@@ -1,5 +1,6 @@
 package com.meeting.common.annotation;
 
+import com.meeting.common.annotation.validator.StringValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

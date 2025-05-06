@@ -1,5 +1,6 @@
-package com.meeting.common.annotation;
+package com.meeting.common.annotation.validator;
 
+import com.meeting.common.annotation.ValidYearQuarter;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
