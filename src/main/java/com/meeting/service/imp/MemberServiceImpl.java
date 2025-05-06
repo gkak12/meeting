@@ -115,28 +115,11 @@ public class MemberServiceImpl implements MemberService {
     @Transactional(readOnly = true)
     public List<ResponseMemberVo> findTop10AttendanceMemberByQuarter(String yearQuarter) {
         String[] part = yearQuarter.split("-");
+        int year = Integer.parseInt(part[0]);
+        int quarter = Integer.parseInt(part[1].replace("Q", ""));
 
-        LocalDateTime startDateTime;
-        LocalDateTime endDateTime;
-
-        switch (part[1]) {
-            case "1Q" -> {
-                startDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 1, 1, 0, 0, 0);
-                endDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 3, 31, 23, 59, 59);
-            }
-            case "2Q" -> {
-                startDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 4, 1, 0, 0, 0);
-                endDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 6, 30, 23, 59, 59);
-            }
-            case "3Q" -> {
-                startDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 7, 1, 0, 0, 0);
-                endDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 9, 30, 23, 59, 59);
-            }
-            default -> {
-                startDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 10, 1, 0, 0, 0);
-                endDateTime = LocalDateTime.of(Integer.parseInt(part[0]), 12, 31, 23, 59, 59);
-            }
-        }
+        LocalDateTime startDateTime = DateTimeUtil.getQuarterStartDateTime(year, quarter);
+        LocalDateTime endDateTime = DateTimeUtil.getQuarterEndDateTime(year, quarter);
 
         return meetingMemberRepository.findTop10AttendanceMemberByQuarter(startDateTime, endDateTime);
     }

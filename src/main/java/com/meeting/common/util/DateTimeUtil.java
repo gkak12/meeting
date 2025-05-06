@@ -39,4 +39,20 @@ public class DateTimeUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return formatter.format(localDateTime);
     }
+
+    public static LocalDateTime getQuarterStartDateTime(int year, int quarter){
+        int startMonth = (quarter - 1) * 3 + 1;
+        LocalDateTime startDateTime = LocalDateTime.of(year, startMonth, 1, 0, 0, 0);
+
+        return startDateTime;
+    }
+
+    public static LocalDateTime getQuarterEndDateTime(int year, int quarter){
+        int endMonth = quarter * 3;
+        YearMonth yearMonth = YearMonth.of(year, endMonth);
+        LocalDate endDate = yearMonth.atEndOfMonth();
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, java.time.LocalTime.of(23, 59, 59));
+
+        return endDateTime;
+    }
 }
