@@ -50,6 +50,7 @@ public class MemberRepositoryDslImpl implements MemberRepositoryDsl {
                 .on(member.memberSeq.eq(meetingMember.member.memberSeq))
                 .where(builder)
                 .groupBy(member.memberSeq)
+                .orderBy(member.memberName.asc())
                 .fetch();
     }
 }
