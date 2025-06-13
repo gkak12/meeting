@@ -130,7 +130,7 @@ public class MeetingRepositoryDslImpl implements MeetingRepositoryDsl {
                 .leftJoin(content)
                 .on(meeting.meetingSeq.eq(content.meeting.meetingSeq))
                 .where(builder)
-                .groupBy(meeting.meetingSeq);
+                .groupBy(meeting.meetingSeq, content.contentName);
 
         if(YnEnums.TRUE.getYnVal().equals(requestMeetingSearchDto.getMinMaxFlag())){
             jpaQuery
