@@ -13,6 +13,7 @@ public interface MemberService {
     ResponseMemberVo findByMemberName(String name);
     List<ResponseMemberMeetingVo> findLatestMeeingEachMember();
     byte[] downloadLatestMeeingEachMember();
+    List<ResponseMemberVo> findMeetingCountEachMember();
     void createMember(RequestMemberCreateDto requestMemberCreateDto);
     void updateMember(RequestMemberUpdateDto requestMemberUpdateDto);
     void deleteMember(Long memberSeq);

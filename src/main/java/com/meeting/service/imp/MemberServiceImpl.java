@@ -129,6 +129,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public List<ResponseMemberVo> findMeetingCountEachMember() {
+        return memberRepository.findMeetingCountEachMember();
+    }
+
+    @Override
     @Transactional
     public void createMember(RequestMemberCreateDto requestMemberCreateDto) {
         memberRepository.save(

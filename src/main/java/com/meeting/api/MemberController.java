@@ -10,7 +10,6 @@ import com.meeting.domain.dto.response.ResponseMemberVo;
 import com.meeting.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -62,7 +61,13 @@ public class MemberController {
                 .headers(headers)
                 .body(memberService.downloadLatestMeeingEachMember());
     }
-    
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/meeting-count-each-member")
+    public ResponseEntity<List<ResponseMemberVo>> findMeetingCountEachMember(){
+        return ResponseEntity.ok(memberService.findMeetingCountEachMember());
+    }
+
     @ResponseStatus(HttpStatus.OK)
     @PostMapping
     public ResponseEntity<Void> createMember(@RequestBody @Valid RequestMemberCreateDto requestMemberCreateDto){

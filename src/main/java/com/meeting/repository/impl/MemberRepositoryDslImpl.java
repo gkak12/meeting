@@ -2,10 +2,12 @@ package com.meeting.repository.impl;
 
 import com.meeting.common.enums.YnEnums;
 import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
+import com.meeting.domain.dto.response.ResponseMemberVo;
 import com.meeting.domain.entity.Member;
 import com.meeting.repository.MemberRepositoryDsl;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +51,28 @@ public class MemberRepositoryDslImpl implements MemberRepositoryDsl {
                 .leftJoin(meetingMember)
                 .on(member.memberSeq.eq(meetingMember.member.memberSeq))
                 .where(builder)
+                .groupBy(member.memberSeq)
+                .orderBy(member.memberName.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<ResponseMemberVo> findMeetingCountEachMember() {
+        return jpaQueryFactory
+                .select(
+                    Projections.fields(
+                        ResponseMemberVo.class,
+                        member.memberName,
+                        Expressions.numberTemplate(
+                            Long.class,
+                    "SUM(CASE WHEN {0} IS TRUE THEN 1 ELSE 0 END)",
+                            meetingMember.isAttendance
+                        ).as("meetingAttendancesNumber")
+                    )
+                )
+                .from(member)
+                .leftJoin(meetingMember)
+                .on(member.memberSeq.eq(meetingMember.member.memberSeq))
                 .groupBy(member.memberSeq)
                 .orderBy(member.memberName.asc())
                 .fetch();
