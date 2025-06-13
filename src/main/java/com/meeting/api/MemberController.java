@@ -10,7 +10,10 @@ import com.meeting.domain.dto.response.ResponseMemberVo;
 import com.meeting.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +48,19 @@ public class MemberController {
     @GetMapping("/latest-meeing-each-member")
     public ResponseEntity<List<ResponseMemberMeetingVo>> findLatestMeeingEachMember(){
         return ResponseEntity.ok(memberService.findLatestMeeingEachMember());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/latest-meeing-each-member/csv")
+    public ResponseEntity<byte[]> downloadLatestMeeingEachMember(){
+        String fileName = "LatestMeeingEachMember.csv";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(memberService.downloadLatestMeeingEachMember());
     }
     
     @ResponseStatus(HttpStatus.OK)

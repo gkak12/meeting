@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +85,47 @@ public class MemberServiceImpl implements MemberService {
             });
 
         return list;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public byte[] downloadLatestMeeingEachMember() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("name,date,place,content\n");
+
+        List<ResponseMemberMeetingVo> list = memberRepository.findLatestMeeingEachMember();
+        List<Long> meetingSeqs = list.stream()
+            .map(ResponseMemberMeetingVo::getMeetingSeq)
+            .collect(Collectors.toList());
+
+        Map<Long, Meeting> map = meetingRepository.findMeetingContent(meetingSeqs).stream()
+            .collect(Collectors.toMap(
+                Meeting::getMeetingSeq,
+                meeting -> meeting,
+                (existing, replacement) -> existing
+            ));
+
+        list.stream()
+            .forEach(item -> {
+                Long meetingSeq = item.getMeetingSeq();
+                Meeting meeting = map.get(meetingSeq);
+                item.setMeetingDateTime(dateTimeUtil.convertLocalDateTimeToString("yyyy-MM-dd HH:mm:ss", meeting.getMeetingDateTime()));
+                item.setMeetingPlace(meeting.getMeetingPlace());
+                item.setContentName(meeting.getContent().getContentName());
+
+                sb.append(item.getMemberName()).append(",")
+                    .append(dateTimeUtil.convertLocalDateTimeToString("yyyy-MM-dd HH:mm:ss", meeting.getMeetingDateTime())).append(",")
+                    .append(meeting.getMeetingPlace()).append(",")
+                    .append(meeting.getContent().getContentName()).append("\n");
+            });
+
+        byte[] bom = new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+        byte[] data = sb.toString().getBytes(StandardCharsets.UTF_8);
+        byte[] body = new byte[bom.length + data.length];
+        System.arraycopy(bom, 0, body, 0, bom.length);
+        System.arraycopy(data, 0, body, bom.length, data.length);
+
+        return body;
     }
 
     @Override

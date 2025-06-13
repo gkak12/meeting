@@ -12,6 +12,7 @@ public interface MemberService {
     ResponseMemberVo findByMemberSeq(Long seq);
     ResponseMemberVo findByMemberName(String name);
     List<ResponseMemberMeetingVo> findLatestMeeingEachMember();
+    byte[] downloadLatestMeeingEachMember();
     void createMember(RequestMemberCreateDto requestMemberCreateDto);
     void updateMember(RequestMemberUpdateDto requestMemberUpdateDto);
     void deleteMember(Long memberSeq);
