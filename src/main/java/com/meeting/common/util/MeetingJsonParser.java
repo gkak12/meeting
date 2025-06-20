@@ -18,16 +18,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -69,12 +64,14 @@ public class MeetingJsonParser {
             .forEach(file -> {  // JSON 파일 파싱
                 parseJsonFile(file, meetingMap);
             });
+
+        File memberFile = new File(dir.getParent(), "memberList.txt");  // Member JSON 파일
+        deleteMember(memberFile);     // Member JSON 파일 기준으로 Member 삭제 처리
     }
 
-    @Transactional(readOnly = true)
-    public Map<LocalDateTime, Meeting> findAllMeetingMap(){ // meeting 전체 데이터 조회해서 Map에 저장
+    public Map<LocalDateTime, Meeting> findAllMeetingMap(){ // meeting 전체 데이터 조회해서 Map으로 리턴
         return meetingRepository.findAll().stream()     // meeting 전체 데이터 조회
-            .collect(Collectors.toMap(  // Map으로 저장
+            .collect(Collectors.toMap(  // Map으로 변환
                 Meeting::getMeetingDateTime,    // key
                 meeting -> meeting,             // value
                 (existing, replacement) -> existing     // 동일한 데이터 존재하는 경우 기존 데이터 유지
@@ -158,6 +155,31 @@ public class MeetingJsonParser {
                     meetingMemberRepository.save(meetingMember);
                 });
         } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteMember(File file){
+        try(InputStream inputStream = new FileInputStream(file);
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))){
+
+            Set<String> memberSet = new HashSet<>();
+
+            String line;
+            while((line = br.readLine()) != null){
+                memberSet.add(line);
+            }
+
+            // 전체 Member 조회해서 소프트 삭제 처리
+            memberRepository.findAll().stream()
+                .filter(item -> !memberSet.contains(item.getMemberName().trim()))
+                .forEach(item -> {
+                    item.setIsDeleted(true);
+                    memberRepository.save(item);
+                });
+        } catch(Exception e){
+            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }

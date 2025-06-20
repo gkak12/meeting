@@ -26,9 +26,9 @@ public class JasyptConfigTest {
 
     @Test
     void stringDecryptor() {
-        String url = "fwst664/lJPSUzfOpnQyjLRwXi0KgGpvMRQG/eQ9Vz4=";
-        String username = "vs4ggM5iCn/MpoROqbLxjA==";
-        String password = "as5gwT0aCnAMp+BYxpSTlA==";
+        String url = "geEBTZoT6kX4c3nxCiMY7a1bDuhtjehKkR8Ko5xm16j7foxZjrKE6DFRbJHOqalrpGpjYRVNHfc=";
+        String username = "1XpdYOgSCnKxRL8zIRl1dLVAY//H1Yw3";
+        String password = "JQVkw4WXboSDk/kDAMmE+hj0bAc4KEs4WDDMQP7o8Fc=";
 
         System.out.println("url: ".concat(jasyptDecoding(url)));
         System.out.println("username: ".concat(jasyptDecoding(username)));
@@ -42,8 +42,8 @@ public class JasyptConfigTest {
 
         return pbeEnc.decrypt(
                 value
-                        .replace("ENC(", "")
-                        .replace(")", "")
+                    .replace("ENC(", "")
+                    .replace(")", "")
         );
     }
 }
