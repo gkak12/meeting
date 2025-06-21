@@ -17,3 +17,6 @@ spring:
 
 json:
   location: "/home/data/json"
+
+server:
+  shutdown: graceful
