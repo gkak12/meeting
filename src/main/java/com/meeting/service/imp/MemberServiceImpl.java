@@ -2,14 +2,15 @@ package com.meeting.service.imp;
 
 import com.meeting.common.enums.MeetingErrorEnums;
 import com.meeting.common.exception.MeetingException;
+import com.meeting.common.util.CsvUtil;
 import com.meeting.common.util.DateTimeUtil;
 import com.meeting.domain.dto.request.RequestMemberCreateDto;
 import com.meeting.domain.dto.request.RequestMemberUpdateDto;
+import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
+import com.meeting.domain.dto.response.ResponseMemberVo;
 import com.meeting.domain.entity.Meeting;
 import com.meeting.domain.entity.Member;
 import com.meeting.domain.mapper.MemberMapper;
-import com.meeting.domain.dto.response.ResponseMemberMeetingVo;
-import com.meeting.domain.dto.response.ResponseMemberVo;
 import com.meeting.repository.MeetingMemberRepository;
 import com.meeting.repository.MeetingRepository;
 import com.meeting.repository.MemberRepository;
@@ -18,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -119,13 +119,7 @@ public class MemberServiceImpl implements MemberService {
                     .append(meeting.getContent().getContentName()).append("\n");
             });
 
-        byte[] bom = new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
-        byte[] data = sb.toString().getBytes(StandardCharsets.UTF_8);
-        byte[] body = new byte[bom.length + data.length];
-        System.arraycopy(bom, 0, body, 0, bom.length);
-        System.arraycopy(data, 0, body, bom.length, data.length);
-
-        return body;
+        return CsvUtil.downloadCsvFile(sb);
     }
 
     @Override
